@@ -1,5 +1,6 @@
 import React from 'react'
 import '../App.css'
+import '../index.css'
 
 const Frame29 = () => {
   return (
@@ -18,11 +19,6 @@ const Frame29 = () => {
             </div>
         </div>
         
-        <div class="form-group about-field">
-            <label class="input-label">What is your hackathon about ?</label>
-            <input type="text" class="text-input"/>
-        </div>
-        
         <div class="form-group email-field">
             <label class="input-label">Email</label>
             <input type="email" class="text-input"/>
@@ -31,6 +27,10 @@ const Frame29 = () => {
         <div class="form-group phone-field">
             <label class="input-label">Phone Number</label>
             <input type="tel" class="text-input"/>
+        </div>
+        <div class="form-group about about-field">
+            <label class="input-label">What is your hackathon about ?</label>
+            <textarea type="text" class="text-input"/>
         </div>
     </div>
   )
