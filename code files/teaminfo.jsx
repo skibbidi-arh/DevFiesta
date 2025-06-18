@@ -1,5 +1,5 @@
 
-import './App.css';
+import './teaminfo.css';
 
 import React, { useEffect, useState } from 'react';
 
