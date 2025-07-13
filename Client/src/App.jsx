@@ -5,15 +5,16 @@ import './App.css'
 import Utsho from './components/Utsho'
 import axios from 'axios'
 import Frame29 from './components/Frame29'
+import Landing_page_app from './components/landing_page_app'
 function App() {
 
 
 
   return (
     <>
-    <div>
-      <Frame29/>
-    </div>
+
+      <Landing_page_app/>
+    
     </>
 
   )
