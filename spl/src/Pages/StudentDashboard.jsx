@@ -71,7 +71,7 @@ export default function StudentDashboard() {
                         </div>
                     </div>
                     <div className="sd-header-right">
-                        <span className="sd-welcome">Welcome, John Doe</span>
+
                         <button className="sd-btn sd-btn-ghost">
                             <FaSignOutAlt className="sd-btn-icon" />
                             Logout
@@ -130,7 +130,7 @@ export default function StudentDashboard() {
                         </div>
 
                     </div>
-                   
+
 
                     <div className="sd-card">
                         <div className="sd-card-content">
@@ -156,10 +156,7 @@ export default function StudentDashboard() {
                             className={activeTab === "github" ? "sd-tab-active" : ""}
                             onClick={() => setActiveTab("github")}
                         >GitHub Repository</button>
-                        <button
-                            className={activeTab === "marks" ? "sd-tab-active" : ""}
-                            onClick={() => setActiveTab("marks")}
-                        >Marks & Feedback</button>
+
                     </div>
 
                     {/* Submissions Tab */}
@@ -289,79 +286,8 @@ export default function StudentDashboard() {
                         </div>
                     )}
 
-                    {/* Marks Tab */}
-                    {activeTab === "marks" && (
-                        <div className="sd-tab-content">
-                            <div className="sd-card">
-                                <div className="sd-card-header">
-                                    <span className="sd-card-title">Marks & Feedback</span>
-                                    <span className="sd-card-desc">View your evaluation results and feedback</span>
-                                </div>
-                                <div className="sd-card-content">
-                                    {submissions.filter((s) => s.marks !== null).map((submission, idx) => (
-                                        <div key={idx} className="sd-submission">
-                                            <div className="sd-row-between mb-small">
-                                                <span className="sd-submission-title">{submission.type}</span>
-                                                <div className="sd-text-right">
-                                                    <div className="sd-big sd-blue">{submission.marks}/100</div>
-                                                    <div className="sd-label">
-                                                        Grade: {submission.marks >= 80 ? "A" : submission.marks >= 70 ? "B" : "C"}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="sd-grid-2">
-                                                <div>
-                                                    <h4 className="sd-section-title">Breakdown</h4>
-                                                    <div className="sd-breakdown">
-                                                        <div><span>Technical Implementation:</span> <span>32/40</span></div>
-                                                        <div><span>Innovation & Creativity:</span> <span>20/25</span></div>
-                                                        <div><span>Presentation Quality:</span> <span>18/20</span></div>
-                                                        <div><span>Documentation:</span> <span>15/15</span></div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <h4 className="sd-section-title">Feedback</h4>
-                                                    <div className="sd-feedback">
-                                                        "Excellent technical implementation with clean code structure. The presentation was well-organized and clear. Consider adding more innovative features for future iterations."
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    {/* Weekly Supervisor Marks */}
-                                    <div className="sd-submission">
-                                        <h3 className="sd-section-title mb-small">Weekly Assessment (Supervisor)</h3>
-                                        <div className="sd-grid-2">
-                                            <div>
-                                                <h4 className="sd-section-title">Recent Weeks</h4>
-                                                <div className="sd-breakdown">
-                                                    <div><span>Week 8 - Attendance:</span> <span>9/10</span></div>
-                                                    <div><span>Week 8 - Contribution:</span> <span>8/10</span></div>
-                                                    <div><span>Week 7 - Attendance:</span> <span>10/10</span></div>
-                                                    <div><span>Week 7 - Contribution:</span> <span>9/10</span></div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h4 className="sd-section-title">Average Scores</h4>
-                                                <div className="sd-progress-info">
-                                                    <div className="sd-row-between mb-tiny">
-                                                        <span className="sd-label">Attendance</span>
-                                                        <span className="sd-label">92%</span>
-                                                    </div>
-                                                    <div className="sd-progress"><div className="sd-progress-bar" style={{ width: '92%' }}></div></div>
-                                                    <div className="sd-row-between mb-tiny mt-small">
-                                                        <span className="sd-label">Contribution</span>
-                                                        <span className="sd-label">88%</span>
-                                                    </div>
-                                                    <div className="sd-progress"><div className="sd-progress-bar" style={{ width: '88%' }}></div></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+
+
                 </div>
             </div>
         </div>
