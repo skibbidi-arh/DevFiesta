@@ -1,22 +1,23 @@
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     FaUsers, FaUpload, FaGithub, FaFileAlt, FaStar, FaGraduationCap,
     FaSignOutAlt, FaExternalLinkAlt, FaCheckCircle, FaClock, FaExclamationCircle
 } from "react-icons/fa";
 import "../Styles/StudentDashboard.css";
 
+
 export default function StudentDashboard() {
     const [teamInfo] = useState({
         name: "Team Alpha",
-        members: ["John Doe (You)", "Jane Smith", "Bob Johnson"],
-        supervisor: "Dr. Wilson",
-        evaluators: ["Prof. Davis", "Dr. Brown"],
-        project: "E-commerce Platform",
+        members: ["Ahir", "Chishti", "Utsho"],
+        supervisor: "Saikat sir",
+        evaluators: ["not fixed yes"],
+        project: "Devfiesta",
     });
 
-    const [submissions] = useState([
+    const [submissions, setSubmissions] = useState([
         {
             type: "Proposal Presentation",
             dueDate: "2024-01-15",
@@ -42,6 +43,20 @@ export default function StudentDashboard() {
 
     const [githubLink, setGithubLink] = useState("https://github.com/team-alpha/ecommerce");
     const [activeTab, setActiveTab] = useState("submissions");
+    const [progress, setProgress] = useState(0);
+
+
+
+    useEffect(() => {
+        fetch('/api/progress')
+            .then(res => res.json())
+            .then(data => setProgress(data.progress))
+            .catch(() => setProgress(0));
+    }, []);
+
+    const total = submissions.length;
+    const submitted = submissions.filter(sub => sub.status === "submitted").length;
+
 
     return (
         <div className="student-dashboard-bg">
@@ -107,30 +122,22 @@ export default function StudentDashboard() {
                         <div className="sd-card-content">
                             <div className="sd-row-between mb-small">
                                 <span className="sd-label">Overall Progress</span>
-                                <span className="sd-big sd-blue">67%</span>
+                                <span className="sd-big sd-blue">{progress}%</span>
                             </div>
                             <div className="sd-progress">
-                                <div className="sd-progress-bar" style={{ width: '67%' }}></div>
+                                <div className="sd-progress-bar" style={{ width: `${progress}%` }}></div>
                             </div>
                         </div>
+
                     </div>
-                    <div className="sd-card">
-                        <div className="sd-card-content">
-                            <div className="sd-row-between">
-                                <div>
-                                    <span className="sd-label">Average Score</span>
-                                    <div className="sd-big sd-green">81.5</div>
-                                </div>
-                                <FaStar className="sd-star" />
-                            </div>
-                        </div>
-                    </div>
+                   
+
                     <div className="sd-card">
                         <div className="sd-card-content">
                             <div className="sd-row-between">
                                 <div>
                                     <span className="sd-label">Submissions</span>
-                                    <div className="sd-big sd-purple">2/3</div>
+                                    <div className="sd-big sd-purple">{submitted}/{total}</div>
                                 </div>
                                 <FaFileAlt className="sd-purple-icon" />
                             </div>
