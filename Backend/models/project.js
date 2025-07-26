@@ -13,8 +13,8 @@ class Project {
 
     const [projectResult] = await pool.execute(
       `INSERT INTO projects (
-        project_name, git_repo, overview, motivation, features, project_genre
-      ) VALUES (?, ?, ?, ?, ?, ?)`,
+        project_name, git_repo, overview, motivation, features, project_genre, creation_date
+      ) VALUES (?, ?, ?, ?, ?, ?, SYSDATE)`,
       [project_name, git_repo, overview, motivation, features, project_genre]
     );
 
@@ -113,6 +113,14 @@ class Project {
       [project_genre]
     );
     return projects;
+  }
+
+  static async getProjectbyDate()
+  {
+        const[projects]= await pool.execute(
+          `select * from projects order by creation_date DESC;`
+        )
+        return projects;
   }
 }
 

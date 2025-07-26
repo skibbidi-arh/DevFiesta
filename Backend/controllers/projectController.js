@@ -52,6 +52,26 @@ class ProjectController{
       return ResponseHandler.error(res, "Failed to retrieve projects", 500, error.message);
     }
   }
+  static async getprojectsbyGenre(req,res)
+  {
+    try
+    {
+      const{genre}= req.body;
+      const projects= await Project.getProjectsByGenre(genre);
+      if (!projects || projects.length === 0) {
+        return ResponseHandler.notFound(res, "No projects found for this user");
+      }
+      return ResponseHandler.success(
+        res,
+        { projects },
+        "Projects retrieved successfully"
+      );
+    } 
+    catch (error) {
+      console.error("Project retrieval error:", error);
+      return ResponseHandler.error(res, "Failed to retrieve projects", 500, error.message);
+    }
+  }
 }
 
 module.exports= ProjectController;
