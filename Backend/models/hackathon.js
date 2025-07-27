@@ -89,4 +89,4 @@ class hackathon{
 
 }    
   
-modules.export= hackathon;
+module.exports= hackathon;

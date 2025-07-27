@@ -3,7 +3,6 @@ const User = require("../models/user")
 const ResponseHandler = require("../utils/responseHandler")
 const PaginationUtils = require("../utils/pagination")
 const AuthController= require("../controllers/authController");
-const {verifyToken}= require("../utils/tokenVarification");
 
 class ProjectController{
     static async createProject(req,res)
@@ -20,7 +19,6 @@ class ProjectController{
                 }= req.body;
 
             const projectData= {project_name,git_repo,overview,motivation,features,project_genre};
-            
             const projectId= await Project.createProject(projectData,username);
 
             return ResponseHandler.success(res,{
