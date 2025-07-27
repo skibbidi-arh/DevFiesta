@@ -1,12 +1,15 @@
+// src/main.jsx
 import React from 'react';
+import {createRoot} from "react-dom/client";
 import ReactDOM from 'react-dom/client';
-import LoginPage from './Pages/loginPage';
-import StudentDashboardPage from './Pages/StudentDashboard';
-import './Styles/StudentDashboard.css';
+import App from './App.jsx';
 import './Styles/LoginPage.css';
+import { BrowserRouter } from 'react-router-dom'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-        <StudentDashboardPage />
-    </React.StrictMode>
+createRoot(document.getElementById('root')).render(
+
+       <BrowserRouter>
+           <App/>
+       </BrowserRouter>
+
 );

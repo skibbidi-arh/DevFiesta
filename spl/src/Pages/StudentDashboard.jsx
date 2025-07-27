@@ -43,7 +43,7 @@ export default function StudentDashboard() {
 
     const [githubLink, setGithubLink] = useState("https://github.com/team-alpha/ecommerce");
     const [activeTab, setActiveTab] = useState("submissions");
-    const [progress, setProgress] = useState(0);
+    const [progress, setProgress] = useState(50);
 
 
 
@@ -51,7 +51,7 @@ export default function StudentDashboard() {
         fetch('/api/progress')
             .then(res => res.json())
             .then(data => setProgress(data.progress))
-            .catch(() => setProgress(0));
+            .catch(() => setProgress(50));
     }, []);
 
     const total = submissions.length;

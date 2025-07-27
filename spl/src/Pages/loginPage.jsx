@@ -1,9 +1,22 @@
 import React, { useState } from "react";
+import {Link} from 'react-router-dom';
+
+import { useNavigate } from "react-router-dom";
+
 import "../Styles/LoginPage.css";
 
 export default function LoginPage() {
     const [role, setRole] = useState("");
+    const navigate = useNavigate();
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (role === "student") {
+            navigate("/student-dashboard");
+        } else {
+            alert("Only 'Student' role demo routes to dashboard.\nYou selected: " + (role || "nothing"));
+        }
+    };
     return (
         <div className="login-bg">
             <div className="login-header">
@@ -20,7 +33,7 @@ export default function LoginPage() {
                 <p className="sub-title">Software Project Lab Management</p>
             </div>
             <div className="login-box">
-                <form className="login-form">
+                <form className="login-form" onSubmit={handleSubmit}>
                     <h3>Sign In</h3>
                     <p className="form-sub">
                         Enter your credentials to access the system
@@ -59,7 +72,7 @@ export default function LoginPage() {
                         <input type="password" placeholder="Enter your password" required />
 
                     </div>
-                    <button type="submit">Sign In</button>
+                    <input type="submit" value="Login"   />
 
                 </form>
             </div>
