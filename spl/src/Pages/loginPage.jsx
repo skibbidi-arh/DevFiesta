@@ -13,7 +13,12 @@ export default function LoginPage() {
         e.preventDefault();
         if (role === "student") {
             navigate("/student-dashboard");
-        } else {
+        }
+        else if (role === "supervisor") {
+            navigate("/supervisor-dashboard");
+        }
+
+        else {
             alert("Only 'Student' role demo routes to dashboard.\nYou selected: " + (role || "nothing"));
         }
     };
