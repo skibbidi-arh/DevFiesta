@@ -51,6 +51,41 @@ const validateProject = [
     .withMessage("Project genre must be between 3 and 50 characters"),
 ];
 
+const validateHackathon = [
+  body("hackathon_name")
+    .notEmpty().withMessage("Hackathon name is required")
+    .isLength({ min: 3, max: 100 }).withMessage("Hackathon name must be 3-100 characters"),
+
+  body("duration")
+    .notEmpty().withMessage("Duration is required")
+    .isLength({ max: 50 }).withMessage("Duration must be under 50 characters"),
+
+  body("genre")
+    .notEmpty().withMessage("Genre is required")
+    .isLength({ max: 100 }).withMessage("Genre must be under 100 characters"),
+
+  body("rule_book")
+    .optional({ checkFalsy: true })
+    .isURL().withMessage("Rule book must be a valid URL"),
+
+  body("hackathon_image")
+    .optional({ checkFalsy: true })
+    .isURL().withMessage("Hackathon image must be a valid URL"),
+
+  body("starting_date")
+    .notEmpty().withMessage("Starting date is required")
+    .isISO8601().toDate().withMessage("Invalid starting date"),
+
+  body("ending_date")
+    .notEmpty().withMessage("Ending date is required")
+    .isISO8601().toDate().withMessage("Invalid ending date"),
+
+  body("judge_username")
+    .notEmpty().withMessage("At least one judge username is required")
+    .matches(/^([a-zA-Z0-9_]+)(,\s*[a-zA-Z0-9_]+)*$/)
+    .withMessage("Judge usernames must be comma-separated valid usernames (letters, numbers, underscores)")
+];
+
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -66,6 +101,7 @@ module.exports = {
   validateRegistration,
   validateLogin,
   validateProject,
+  validateHackathon,
   handleValidationErrors,
 };
 

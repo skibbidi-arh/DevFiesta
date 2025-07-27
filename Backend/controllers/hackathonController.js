@@ -63,7 +63,7 @@ class hackathonController{
         {
             const {hackathon_name}= req.params;
             const hackathons= await Hackathon.get_hackathon_by_name(hackathon_name);
-            if(!hackathons || hackathons===0)
+            if(!hackathons || hackathons.length===0)
             {
                 return ResponseHandler.notFound(res,`No hackathon named ${hackathon_name} found`);
             }
@@ -84,7 +84,7 @@ class hackathonController{
         {
             const { genre }= req.params;
             const hackathons= await Hackathon.get_hackathon_by_genre(genre);
-            if(!hackathons || hackathons===0)
+            if(!hackathons || hackathons.length===0)
             {
                 return ResponseHandler.notFound(res,`No hackathon of the genre ${genre} found`);
             }
@@ -105,7 +105,7 @@ class hackathonController{
         {
             const {duration}= req.params;
             const hackathons= await Hackathon.get_hackathon_by_duration(duration);
-            if(!hackathons || hackathons===0)
+            if(!hackathons || hackathons.length===0)
             {
                 return ResponseHandler.notFound(res,`No hackathon of the duration ${duration} found`);
             }
@@ -128,9 +128,9 @@ class hackathonController{
 
             const judges= await Hackathon.get_judge_details(hackathon_id);
 
-            if(!judges || judges===0)
+            if(!judges || judges.length===0)
             {
-                ResponseHandler.notFound(res,`No Judges Found`);
+               return ResponseHandler.notFound(res,`No Judges Found`);
             }
 
             return ResponseHandler.success(res,{judges},`Judges Found Successfully`);
@@ -139,6 +139,25 @@ class hackathonController{
         {
             console.error(`Error Finding Judges: `,error);
             ResponseHandler.error(res,`Failed Retrieving Judges info`,error.message);
+        }
+    }
+
+    static async get_all_hackathon(req,res)
+    {
+        try
+        {
+            const hackathons = await Hackathon.get_all_hackathon();
+            if(!hackathons||hackathons.length===0)
+            {
+                return ResponseHandler.notFound(res,`No Hackathon Found`);
+            }
+
+            return ResponseHandler.success(res,{hackathons},'Retrievied successfully');
+        }
+        catch(error)
+        {
+            console.error(`Error Retrieving Hackathon: `,error);
+            ResponseHandler.error(res,`Could not retrieve Hackathon`,error.message);
         }
     }
     
