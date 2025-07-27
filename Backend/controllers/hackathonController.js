@@ -11,10 +11,10 @@ class hackathonController{
         {
             const
             {
-                hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date
+                hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username
             }= req.body;
 
-            const hackathon_data= {hackathon_name,duration,genre,rule_book,hackathon_image,starting_date,ending_date};
+            const hackathon_data= {hackathon_name,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username};
 
             const  hackathon_id= await Hackathon.host_hackathon(hackathon_data,host_username);
             
