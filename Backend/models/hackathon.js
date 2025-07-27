@@ -74,6 +74,19 @@ class hackathon{
         const[hackathon]= await pool.execute(`select * from hackathon where duration=?`,[duration]);
         return hackathon;
     }
-}  
 
+    static async get_hackathons_by_judges(judge_username)
+    {
+        const[hackathon]= await pool.execute(`select * from hackathon h join judges j on h.hackathon_id=j.hackathon_id where j.judge_username=? and h.ending_date >= current_date`,[judge_username]);
+        return hackathon;
+    }
+
+        static async get_all_hackathons_by_judges(judge_username)
+    {
+        const[hackathon]= await pool.execute(`select * from hackathon h join judges j on h.hackathon_id=j.hackathon_id where j.judge_username=?`,[judge_username]);
+        return hackathon;
+    }
+
+}    
+  
 modules.export= hackathon;

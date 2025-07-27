@@ -160,5 +160,25 @@ class hackathonController{
             ResponseHandler.error(res,`Could not retrieve Hackathon`,error.message);
         }
     }
+
+    static async get_judges_hackathons(req,res)
+    {
+    try{ 
+        const{username}= req.user;
+        const hackathons= await Hackathon.get_hackathons_by_judges(username);
+        if(!hackathons||hackathons.length===0)
+            {
+                return ResponseHandler.notFound(res,`No Hackathon Hosted By ${username}`);
+            }
+        return ResponseHandler.success(res,{hackathons},'Retrievied successfully');
+    }
+    catch(error)
+    {
+        console.error(`Error Retrieveing Hackathon: `,error);
+        ResponseHandler.error(res,`Failed Retrieving Hackathon`,500,error.message);
+    }
+    }
     
 }
+
+module.exports= hackathonController;
