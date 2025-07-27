@@ -30,4 +30,20 @@ const authenticateToken = async (req, res, next) => {
   }
 }
 
-module.exports = { authenticateToken }
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Token missing or invalid" })
+  }
+
+  try {
+    const token = authHeader.split(" ")[1]
+    const user = JWTUtils.verifyToken(token)
+    req.user = user // user = { username, email }
+    next()
+  } catch (err) {
+    return res.status(401).json({ error: err.message || "Invalid token" })
+  }
+}
+
+module.exports = { authenticateToken, verifyToken }

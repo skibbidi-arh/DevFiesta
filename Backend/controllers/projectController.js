@@ -3,6 +3,7 @@ const User = require("../models/user")
 const ResponseHandler = require("../utils/responseHandler")
 const PaginationUtils = require("../utils/pagination")
 const AuthController= require("../controllers/authController");
+const {verifyToken}= require("../utils/tokenVarification");
 
 class ProjectController{
     static async createProject(req,res)
@@ -34,7 +35,7 @@ class ProjectController{
 
     static async retrieveProjectsbyUsername(req, res) {
     try {
-      const { username } = req.body;
+      const { username } = req.user;
 
       const projects = await Project.getProjectsByUsername(username);
 
@@ -56,10 +57,10 @@ class ProjectController{
   {
     try
     {
-      const{genre}= req.body;
+      const{genre}= req.params;
       const projects= await Project.getProjectsByGenre(genre);
       if (!projects || projects.length === 0) {
-        return ResponseHandler.notFound(res, "No projects found for this user");
+        return ResponseHandler.notFound(res, "No projects found for this genre");
       }
       return ResponseHandler.success(
         res,
