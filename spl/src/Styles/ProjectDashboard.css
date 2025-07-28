@@ -1,16 +1,30 @@
+body {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    background: #f6f8fb;
+    margin: 0;
+}
 
-.sd-team-info-cards {
+/* Utility Grid */
+.sd-team-info-cards,
+.sd-grid-3,
+.sd-grid-2 {
     display: grid;
-    grid-template-columns: 1fr;
     gap: 22px;
-    padding: 0;
+}
+.sd-team-info-cards,
+.sd-grid-3 {
+    grid-template-columns: 1fr;
+}
+.sd-grid-2 {
+    grid-template-columns: 1fr;
 }
 @media (min-width: 768px) {
-    .sd-team-info-cards {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    .sd-team-info-cards,
+    .sd-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .sd-grid-2 { grid-template-columns: 1fr 1fr; }
 }
 
+/* Info Card */
 .sd-team-info-card {
     background: linear-gradient(120deg, #f1f5f9 60%, #e0f2fe 100%);
     border-radius: 14px;
@@ -28,6 +42,7 @@
     border-color: #bae6fd;
 }
 
+/* Section Titles */
 .sd-section-title {
     font-size: 1.1rem;
     font-weight: 700;
@@ -36,31 +51,34 @@
     letter-spacing: -0.3px;
 }
 
+/* List Items */
 .sd-list-item,
 .sd-evaluator {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 7px 0 7px 0;
+    padding: 7px 0;
     font-size: 1.04rem;
     color: #334155;
     border-bottom: 1px dashed #e0e7ef;
     transition: background 0.14s;
 }
 .sd-list-item:last-child,
-.sd-evaluator:last-child { border-bottom: none; }
+.sd-evaluator:last-child {
+    border-bottom: none;
+}
 .sd-list-item:hover,
 .sd-evaluator:hover {
     background: #e0f2fe55;
 }
 
+/* Name & Dot */
 .sd-member-name,
 .sd-evaluator-name,
 .sd-supervisor-name {
     font-weight: 500;
     letter-spacing: -0.1px;
 }
-
 .sd-dot {
     width: 9px;
     height: 9px;
@@ -70,6 +88,7 @@
     box-shadow: 0 1.5px 6px 0 rgba(56,189,248,0.09);
 }
 
+/* Supervisor/Evaluator Styles */
 .sd-supervisor {
     display: flex;
     align-items: center;
@@ -86,18 +105,11 @@
     color: #a21caf;
 }
 
-
-body {
-    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-    background: #f6f8fb;
-    margin: 0;
-}
-
+/* Header & Card Layouts */
 .student-dashboard-bg {
     min-height: 100vh;
     background: linear-gradient(120deg, #f0f9ff 0%, #f9fafb 60%, #e6f2fb 100%);
 }
-
 .sd-header {
     background: #fff;
     border-bottom: 1px solid #f2f4f8;
@@ -106,7 +118,6 @@ body {
     top: 0;
     z-index: 99;
 }
-
 .sd-header-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -116,13 +127,11 @@ body {
     padding: 0 32px;
     height: 72px;
 }
-
 .sd-header-left {
     display: flex;
     align-items: center;
     gap: 18px;
 }
-
 .sd-logo {
     width: 44px;
     height: 44px;
@@ -135,7 +144,6 @@ body {
     font-size: 23px;
     box-shadow: 0 4px 16px 0 rgba(2,32,71,0.07);
 }
-
 .sd-title {
     font-size: 1.4rem;
     font-weight: 700;
@@ -143,24 +151,22 @@ body {
     letter-spacing: -0.5px;
     color: #1e293b;
 }
-
 .sd-subtitle {
     font-size: 1rem;
     color: #64748b;
     margin: 0;
 }
-
 .sd-header-right {
     display: flex;
     align-items: center;
     gap: 24px;
 }
-
 .sd-welcome {
     font-size: 1rem;
     color: #475569;
 }
 
+/* Button Styles */
 .sd-btn {
     border: none;
     outline: none;
@@ -179,12 +185,13 @@ body {
     font-size: 1.04rem;
 }
 .sd-btn:hover,
-.sd-btn:focus {
+.sd-btn:focus,
+.sd-btn:focus-visible {
     background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%);
     box-shadow: 0 4px 12px 0 rgba(2,32,71,0.10);
     color: #fff;
+    outline: none;
 }
-
 .sd-btn-ghost {
     background: transparent;
     color: #64748b;
@@ -225,12 +232,12 @@ body {
     margin-left: 3px;
 }
 
+/* Card Containers */
 .sd-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 32px 16px 64px 16px;
 }
-
 .sd-card {
     background: #fff;
     border-radius: 16px;
@@ -242,7 +249,6 @@ body {
 .sd-card:hover {
     box-shadow: 0 12px 32px 0 rgba(2,32,71,0.09), 0 1.5px 7px 0 rgba(32,52,89,0.09);
 }
-
 .sd-card-header {
     padding: 24px 32px 10px 32px;
 }
@@ -262,16 +268,17 @@ body {
 .sd-card-content {
     padding: 18px 32px 32px 32px;
 }
-
 .sd-card-icon {
     color: #38bdf8;
 }
 
+/* Margin Utilities */
 .mb { margin-bottom: 32px !important; }
 .mb-small { margin-bottom: 12px !important; }
 .mb-tiny { margin-bottom: 4px !important; }
 .mt-small { margin-top: 14px !important; }
 
+/* Section Title */
 .sd-section-title {
     font-weight: 600;
     color: #1e293b;
@@ -279,7 +286,6 @@ body {
     letter-spacing: -.3px;
     font-size: 1.04rem;
 }
-
 .sd-list-item {
     color: #475569;
     display: flex;
@@ -289,26 +295,15 @@ body {
     font-size: 1rem;
 }
 .sd-dot {
-    width: 9px; height: 9px;
+    width: 9px;
+    height: 9px;
     background: linear-gradient(135deg, #38bdf8 60%, #0ea5e9 100%);
     border-radius: 50%;
     display: inline-block;
     margin-right: 5px;
 }
 
-.sd-grid-3 {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 22px;
-}
-@media (min-width: 768px) { .sd-grid-3 { grid-template-columns: repeat(3, 1fr); } }
-.sd-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
-}
-@media (min-width: 768px) { .sd-grid-2 { grid-template-columns: 1fr 1fr; } }
-
+/* General Flex Row/Col */
 .sd-row-between {
     display: flex;
     justify-content: space-between;
@@ -320,6 +315,7 @@ body {
     gap: 10px;
 }
 
+/* Label & Big Font */
 .sd-label {
     color: #64748b;
     font-size: 1.01rem;
@@ -338,6 +334,7 @@ body {
 .sd-star { color: #16a34a; font-size: 33px; }
 .sd-break-all { word-break: break-all; }
 
+/* Submission Card */
 .sd-submission {
     border-radius: 13px;
     padding: 22px 20px;
@@ -377,6 +374,7 @@ body {
     color: #c2410c;
 }
 
+/* File Info & Feedback */
 .sd-file-info {
     border-radius: 10px;
     padding: 14px 20px;
@@ -399,16 +397,8 @@ body {
     margin-top: 10px;
     border-left: 4px solid #38bdf8;
 }
-.sd-breakdown {
-    font-size: 1.01rem;
-    color: #475569;
-    margin-top: 2px;
-}
-.sd-breakdown > div {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-}
+
+/* Progress */
 .sd-progress {
     background: #e0e7ef;
     border-radius: 12px;
@@ -425,6 +415,7 @@ body {
     transition: width 0.4s cubic-bezier(.4,0,.2,1);
 }
 
+/* Input */
 .sd-input {
     border: 1.5px solid #e5e7eb;
     border-radius: 8px;
@@ -442,6 +433,7 @@ body {
     box-shadow: 0 0 0 1.5px #38bdf8;
 }
 
+/* Card Inner */
 .sd-card-inner {
     background: #fcfdfe;
     border: 1.5px solid #e0f2fe;
@@ -458,6 +450,7 @@ body {
     font-size: 1.05rem;
 }
 
+/* Tabs */
 .sd-tabs { margin-bottom: 32px; }
 .sd-tabs-list {
     background: #fff;
@@ -494,13 +487,14 @@ body {
     background: #f0f9ff;
     color: #0ea5e9;
 }
-
 .sd-tab-content {
-    padding: 0 0 0 0;
+    padding: 0;
     background: #fff;
     border-radius: 0 0 13px 13px;
     box-shadow: 0 2px 8px 0 rgba(56,189,248,0.04);
 }
+
+/* Text and Misc */
 .sd-text-right { text-align: right; }
 .mr { margin-right: 7px; }
 .sd-orange { color: #ea580c; }

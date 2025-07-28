@@ -2,8 +2,12 @@
 import React, { useState } from "react";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Loginpage from '../Pages/loginPage';
-import StudentDashboard from '../Pages/StudentDashboard';
-import SupervisorDashboard from "../Pages/SupervisorDashboard.jsx";
+import ProjectDashboard from '../Pages/ProjectDashboard.jsx';
+import SupervisorDashboard from "../Pages/SupervisorDashboard";
+import StudentPersonal from "../Pages/StudentPersonal";
+
+
+
 
 function AppRoutes() {
     return (
@@ -11,7 +15,8 @@ function AppRoutes() {
             <Route path="/" element={<Loginpage />} />
             <Route path="/login" element={<Loginpage />} />
             <Route path ="/supervisor-dashboard" element={<SupervisorDashboard />}  />
-            <Route path="/student-dashboard" element={<StudentDashboard />} />
+            <Route path="/project-dashboard" element={<ProjectDashboard />} />
+            <Route path="/student-personal" element={<StudentPersonal />} />
         </Routes>
     );
 }

@@ -2,7 +2,7 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./Routes/routing";
-import StudentDashboard from "./Pages/StudentDashboard";
+import ProjectDashboard from "./Pages/ProjectDashboard.jsx";
 import LoginPage from "./Pages/loginPage";
 import { Link } from 'react-router-dom'
 

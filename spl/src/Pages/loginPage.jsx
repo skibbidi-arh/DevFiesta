@@ -12,7 +12,7 @@ export default function LoginPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (role === "student") {
-            navigate("/student-dashboard");
+            navigate("/student-personal");
         }
         else if (role === "supervisor") {
             navigate("/supervisor-dashboard");
