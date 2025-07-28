@@ -16,19 +16,19 @@ export default function PersonalDashboard() {
         {
             id: 1,
             name: "Devfiesta",
-            category: "Web Application",
+            category: "Spl 2",
             github: "https://github.com/arhamapon/student-dashboard"
         },
         {
             id: 2,
-            name: "EduPro",
-            category: "Educational Platform",
-            github: "https://github.com/arhamapon/edupro"
+            name: "Turing Machine",
+            category: "SPL 1",
+            github: "https://github.com/skibbidi-arh/Turing-Machine"
         },
         {
             id: 3,
-            name: "FitTrack",
-            category: "Fitness Tracker",
+            name: "Jonobarta",
+            category: "DP",
             github: "https://github.com/arhamapon/fittrack"
         }
     ]);
