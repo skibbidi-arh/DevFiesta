@@ -39,9 +39,9 @@ export default function LoginPage() {
             </div>
             <div className="login-box">
                 <form className="login-form" onSubmit={handleSubmit}>
-                    <h3>Sign In</h3>
+                    <h3>Log In</h3>
                     <p className="form-sub">
-                        Enter your credentials to access the system
+                        Enter your credentials
                     </p>
                     <label>Select Role</label>
                     <select

@@ -49,7 +49,7 @@ export default function PersonalDashboard() {
         fetchProfile();
     }, [username]);
 
-    // === Uncomment this to fetch from your backend when it's ready ===
+
     /*
     React.useEffect(() => {
         const fetchProjects = async () => {

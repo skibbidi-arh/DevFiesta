@@ -3,7 +3,7 @@ import {
     FaUpload, FaGithub, FaFileAlt, FaGraduationCap,
     FaSignOutAlt, FaExternalLinkAlt, FaCheckCircle, FaClock, FaExclamationCircle
 } from "react-icons/fa";
-import "../Styles/ProjectDashboard.css"; // Ensure your CSS file matches the filename!
+import "../Styles/ProjectDashboard.css";
 
 export default function ProjectDashboard() {
     const [submissions] = useState([
@@ -214,18 +214,8 @@ export default function ProjectDashboard() {
                                     <p className="sd-label sd-break-all">{githubLink}</p>
                                 </div>
                                 <div className="sd-grid-3">
-                                    <div className="sd-card-inner">
-                                        <h5 className="sd-card-inner-title">Total Commits</h5>
-                                        <p className="sd-big sd-blue">127</p>
-                                    </div>
-                                    <div className="sd-card-inner">
-                                        <h5 className="sd-card-inner-title">Your Commits</h5>
-                                        <p className="sd-big sd-green">45</p>
-                                    </div>
-                                    <div className="sd-card-inner">
-                                        <h5 className="sd-card-inner-title">Last Update</h5>
-                                        <p className="sd-label">2 days ago</p>
-                                    </div>
+                                   
+
                                 </div>
                             </div>
                         </div>

@@ -1,0 +1,315 @@
+/* --- BACKGROUND & PAGE --- */
+.admin-dashboard {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eaf6fb 0%, #fff 100%);
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+/* --- HEADER --- */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.3rem 2.4rem;
+    background: #fff;
+    border-bottom: 1px solid #e6ecf0;
+    box-shadow: 0 4px 16px #0001;
+    z-index: 10;
+}
+
+.admin-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+}
+
+.admin-logo {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #38bdf8 70%, #0ea5e9 100%);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 2.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px #38bdf855;
+    font-weight: 800;
+}
+
+.admin-title {
+    font-weight: 800;
+    font-size: 1.45rem;
+    color: #21292e;
+    letter-spacing: 0.02em;
+}
+
+.admin-subtitle {
+    font-size: 1rem;
+    color: #5c6b7a;
+    margin-top: 0.18rem;
+}
+
+.admin-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+}
+
+/* LOGOUT BUTTON */
+.admin-logout-btn {
+    background: none;
+    border: none;
+    color: #0ea5e9;
+    font-size: 1.08rem;
+    cursor: pointer;
+    transition: color 0.18s;
+    font-weight: 600;
+    margin-left: 70rem;
+    margin-top: -20px; /* Adjusted for visual alignment */
+}
+
+.admin-logout-btn:hover {
+    color: #f43f5e;
+}
+
+/* --- MAIN CONTENT --- */
+.admin-content {
+    max-width: 1160px;
+    margin: 2.2rem auto;
+    padding: 0 1.3rem;
+}
+
+/* --- STAT CARDS --- */
+.stats-cards {
+    display: flex;
+    gap: 2.2rem;
+    margin-bottom: 2.2rem;
+}
+
+.stat-card {
+    background: #fff;
+    box-shadow: 0 4px 20px #4fc3f72a;
+    border-radius: 1.2rem;
+    padding: 1.7rem 2.2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: box-shadow 0.19s;
+    border: 1.5px solid #e0f2fe;
+}
+
+.stat-card:hover {
+    box-shadow: 0 6px 28px #4fc3f759;
+    border-color: #38bdf8;
+}
+
+.stat-card-label {
+    font-size: 1.05rem;
+    color: #868b94;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+.stat-card-value {
+    font-size: 2.32rem;
+    font-weight: 800;
+    color: #0ea5e9;
+    margin-top: 0.25rem;
+}
+
+/* --- TABS --- */
+.tabs {
+    display: flex;
+    gap: 1.1rem;
+    margin-bottom: 2.2rem;
+}
+
+.tab-trigger {
+    padding: 0.85rem 1.9rem;
+    border-radius: 0.7rem;
+    background: #f3f7fa;
+    border: none;
+    font-size: 1.11rem;
+    cursor: pointer;
+    color: #28303a;
+    font-weight: 600;
+    transition: background 0.17s, color 0.17s;
+}
+
+.tab-trigger.active, .tab-trigger:focus {
+    background: linear-gradient(135deg, #38bdf8 80%, #0ea5e9 100%);
+    color: #fff;
+    box-shadow: 0 2px 10px #38bdf844;
+}
+
+.tab-content {
+    min-height: 370px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6rem;
+    margin-left: -30rem;
+}
+
+/* --- TEAM MANAGEMENT --- */
+.team-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2.2rem;
+}
+
+.team-card {
+    background: #fff;
+    border-radius: 1.1rem;
+    box-shadow: 0 4px 16px #0002;
+    padding: 1.8rem 1.6rem 1.2rem;
+    border: 1.5px solid #e0f2fe;
+    transition: box-shadow 0.18s, border 0.18s;
+}
+
+.team-card:hover {
+    box-shadow: 0 7px 32px #4fc3f744;
+    border-color: #38bdf8;
+}
+
+.team-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.team-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #222e39;
+}
+
+.badge {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 0.41em 1.1em;
+    border-radius: 1em;
+    font-size: 0.97rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.team-card-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #0061a8;
+    transition: color 0.3s ease;
+}
+
+.action-btn:hover {
+    color: #ff4d4d;
+}
+
+.btn-create-team {
+    background-color: #2287e6;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    margin-bottom: 3rem;
+}
+
+.btn-create-team:hover {
+    background-color: #005582;
+}
+
+/* --- EVALUATION CRITERIA --- */
+.btn-create-criteria{
+    background-color: #2287e6;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    margin-bottom: 3rem;
+}
+.criteria-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.evaluation-item {
+    background: #fff;
+    padding: 1.8rem;
+    border-radius: 1.1rem;
+    box-shadow: 0 4px 16px #0002;
+    border: 1.5px solid #e0f2fe;
+    transition: box-shadow 0.18s, border 0.18s;
+}
+
+.evaluation-item:hover {
+    box-shadow: 0 7px 32px #4fc3f744;
+    border-color: #38bdf8;
+}
+
+.evaluation-item h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0369a1;
+}
+
+.evaluation-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #0061a8;
+    transition: color 0.3s ease;
+}
+
+.action-btn:hover {
+    color: #ff4d4d;
+}
+
+/* --- REPORTS SECTION --- */
+.export-btn {
+    background-color: #0061a8;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.export-btn:hover {
+    background-color: #005582;
+}
