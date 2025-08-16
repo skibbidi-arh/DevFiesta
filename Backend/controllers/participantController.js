@@ -46,9 +46,9 @@ class participantController {
 
     static async marking_teams(req, res) {
         try {
-            const { team_id, hackathon_id, judge_username, criteria_id, marks, comments } = req.body;
+            const { team_id, hackathon_id, judge_username, criteria_ids, marks, comments } = req.body;
 
-            await Team.team_marking(team_id, hackathon_id, judge_username, criteria_id, marks, comments);
+            await Team.team_marking(team_id, hackathon_id, judge_username, criteria_ids, marks, comments);
 
             return ResponseHandler.success(res, { team_id, hackathon_id }, "Team marked successfully");
         } catch (error) {

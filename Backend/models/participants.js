@@ -47,9 +47,14 @@ class team{
         return team_members;
     }
 
-    static async team_marking(team_id, hackathon_id, judge_username, criteria_id, marks, comments)
+    static async team_marking(team_id, hackathon_id, judge_username, criteria_ids, marks, comments)
     {
-        await pool.execute(`insert into marking(hackathon_id, judge_username, team_id,criteria_id, marks, comments) values(?,?,?,?,?,?)`,[hackathon_id,judge_username,team_id,criteria_id,marks,comments]);
+        for (let i = 0; i < criteria_ids.length; i++) {
+            const criteria_id = criteria_ids[i].criteria_id;
+            const mark = marks[i].mark;
+
+            await pool.execute(`INSERT INTO marking(hackathon_id, judge_username, team_id, criteria_id, marks, comments) VALUES (?, ?, ?, ?, ?, ?)`,[hackathon_id, judge_username, team_id, criteria_id, mark, comments]);
+}
 
     }
     
