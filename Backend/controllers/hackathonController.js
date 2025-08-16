@@ -12,10 +12,10 @@ class hackathonController{
             console.log('it is done')
             const
             {
-                hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username
+                hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username, criterias
             }= req.body;
 
-            const hackathon_data= {hackathon_name,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username};
+            const hackathon_data= {hackathon_name,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username,criterias};
 
             const  hackathon_id= await Hackathon.host_hackathon(hackathon_data,host_username);
             
@@ -198,6 +198,23 @@ class hackathonController{
         ResponseHandler.error(res,`Failed Retrieving Hackathon`,500,error.message);
     }
     }
+    static async get_user_role(req, res) {
+    try {
+        const { username } = req.user;
+        const { hackathon_id } = req.params;
+
+        const [role] = await Hackathon.role_finding(username, hackathon_id);
+
+        if (!role) {
+            return ResponseHandler.notFound(res, `No role found for ${username} in hackathon ${hackathon_id}`);
+        }
+
+        return ResponseHandler.success(res, { role }, "Role retrieved successfully");
+    } catch (error) {
+        console.error("Error retrieving role:", error);
+        return ResponseHandler.error(res, "Failed retrieving role", 500, error.message);
+    }
+}
     
 }
 
