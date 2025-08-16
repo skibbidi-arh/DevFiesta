@@ -11,7 +11,10 @@ const app = express();
 console.log("DB_HOST:", process.env.DB_HOST); 
 testConnection();
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);

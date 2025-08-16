@@ -24,6 +24,8 @@ router.post(
   AuthController.login
 );
 
+
+
 router.get("/profile", verifyToken, AuthController.fetchProfile);
 router.put("/profile", verifyToken, AuthController.update_profile);
 module.exports = router;

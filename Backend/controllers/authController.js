@@ -59,7 +59,8 @@ class AuthController {
       }
 
       const token = JWTUtils.generateToken({ username: user.username, email });
-
+      console.log(token)
+      res.cookie('tokenkey',token)
       return ResponseHandler.success(res, {
         token,
         user: {
@@ -92,6 +93,7 @@ class AuthController {
 
   static async update_profile(req, res) {
     try {
+      console.log(req.user)
       const username = req.user.username; // ✅ safer than relying on client
       const userData = req.body;
 

@@ -66,11 +66,10 @@ class User{
   static async updateProfile(username, updateData) {
     const { full_name, date_of_birth, skills, interests, achievement, bio, github_link, institution, phone, image } =
       updateData
-
+    console.log(updateData)
     const [result] = await pool.execute(
       `UPDATE users SET 
        full_name = COALESCE(?, full_name),
-       date_of_birth = COALESCE(?, date_of_birth),
        skills = COALESCE(?, skills),
        interests = COALESCE(?, interests),
        achievement = COALESCE(?, achievement),
@@ -78,9 +77,9 @@ class User{
        github_link = COALESCE(?, github_link),
        institution = COALESCE(?, institution),
        phone = COALESCE(?, phone),
-       image= COALESCE(?,image),
+       image= COALESCE(?,image)
        WHERE username = ?`,
-      [full_name, date_of_birth, skills, interests, achievement, bio, github_link, institution, phone , image, username],
+      [full_name,skills, interests, achievement, bio, github_link, institution, phone , image, username],
     )
 
     return result

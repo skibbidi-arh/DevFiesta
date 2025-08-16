@@ -1,0 +1,10 @@
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=1234
+DB_NAME=devfiesta
+
+JWT_SECRET=nY3sc8Zb7Jlo4RfK6k3mP7x2XbKbR+GT6BKPryrLJZk3LJg9b2GyIaO8gck0qwdRbAop9ltmYtwRt2bH2RxmQ==
+JWT_EXPIRATION=15d
+
+PORT=4000
+NODE_ENV=development

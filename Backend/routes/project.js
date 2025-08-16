@@ -19,6 +19,5 @@ router.get("/my-projects", verifyToken, ProjectController.retrieveProjectsbyUser
 router.get("/genre/:genre", ProjectController.getprojectsbyGenre)
 
 
-
-
+router.get(`/all-projects`,ProjectController.get_all_projects);
 module.exports = router

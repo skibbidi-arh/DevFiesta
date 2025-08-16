@@ -14,8 +14,8 @@ class hackathon{
             ending_date,
             judge_username,
         }=hackathon_data;
-
-        const [hackathon_result]= await pool.execute(`insert into hackathon(hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,added_date) values(?,?,?,?,?,?,?,?,SYSDATE)`,[hackathon_name,username,duration,genre,rule_book,hackathon_image,starting_date,ending_date]);
+        console.log(hackathon.data)
+        const [hackathon_result]= await pool.execute(`insert into hackathon(hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,added_date) values(?,?,?,?,?,?,?,?,NOW())`,[hackathon_name,username,duration,genre,rule_book,hackathon_image,starting_date,ending_date]);
 
         const hackathon_id= hackathon_result.insertId;
 
@@ -59,7 +59,7 @@ class hackathon{
 
     static async get_judge_details(hackathon_id)
     {
-        const[judge]=await pool.execute(`select * from user u join judges j on u.username=judge_username where j.hackathon_id=?`,[hackathon_id]);
+        const[judge]=await pool.execute(`select * from users u join judges j on u.username=judge_username where j.hackathon_id=?`,[hackathon_id]);
         return judge;
     }
 

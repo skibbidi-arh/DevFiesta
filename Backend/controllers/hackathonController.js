@@ -9,6 +9,7 @@ class hackathonController{
     {
         try
         {
+            console.log('it is done')
             const
             {
                 hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username
@@ -33,6 +34,7 @@ class hackathonController{
     {
         try
         {
+            console.log('reached here ')
             const {username}= req.user;
 
             const hackathons= await Hackathon.get_hackathon_by_username(username);

@@ -14,7 +14,7 @@ class Project {
     const [projectResult] = await pool.execute(
       `INSERT INTO projects (
         project_name, git_repo, overview, motivation, features, project_genre, creation_date
-      ) VALUES (?, ?, ?, ?, ?, ?, SYSDATE)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, NOW())`,
       [project_name, git_repo, overview, motivation, features, project_genre]
     );
 
@@ -24,6 +24,40 @@ class Project {
       `INSERT INTO p_u_junction (project_id, username) VALUES (?, ?)`,
       [project_id, username]
     );
+
+    return { project_id };
+  }
+  static async createProject_for_team(projectData, usernames) {
+    const {
+      project_name,
+      git_repo,
+      overview,
+      motivation,
+      features,
+      project_genre,
+    } = projectData;
+
+    const [projectResult] = await pool.execute(
+      `INSERT INTO projects (
+        project_name, git_repo, overview, motivation, features, project_genre, creation_date
+      ) VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+      [project_name, git_repo, overview, motivation, features, project_genre]
+    );
+
+    const project_id = projectResult.insertId;
+
+    for (const Participants of usernames) {
+                const participants_username = (Participants.username || "").trim();
+                if (!participants_username) continue;
+
+                const user = await User.findByUsername(participants_username);
+                if (user) {
+                  await pool.execute(`INSERT INTO p_u_junction (project_id, username) VALUES (?, ?)`,[project_id, participants_username]);
+                } 
+                else {
+                  console.warn(`User not found: ${judge_username} — skipping judge_entry`);
+                }
+    }
 
     return { project_id };
   }
