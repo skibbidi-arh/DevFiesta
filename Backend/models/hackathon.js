@@ -21,12 +21,15 @@ class hackathon{
         const hackathon_id= hackathon_result.insertId;
 
         const judgeUsernames = judge_username.split(",").map(j => j.trim());
-
-        for (const judge of judges) {
-                const judge_username = (judge.username || "").trim();
-                if (!judge_username) continue;
+        console.log(judgeUsernames)
+        
+        for (const judge of judgeUsernames) {
+                const judge_username = (judge || "").trim();
+                 console.log('this is the user ',judge_username)
+                if (!judge_username) continue;  
 
                 const user = await User.findByUsername(judge_username);
+               
             if (user) {
                     await pool.execute(`INSERT INTO judges (judge_username, hackathon_id) VALUES (?, ?)`,[judge_username, hackathon_id]);
                 } 
@@ -54,11 +57,39 @@ class hackathon{
         const [hackathon]= await pool.execute(`select * from hackathon where genre=?`,[genre]);
         return hackathon;
     }
-    static async get_all_hackathon()
-    {
-        const [hackathon]= await pool.execute(`select * from hackathon order by added_date DESC`);
-        return hackathon;
-    }
+static async get_all_hackathon() {
+  const [hackathons] = await pool.execute(`
+    SELECT 
+      h.hackathon_id,
+      h.hackathon_name,
+      h.host_username,
+      h.duration,
+      h.genre,
+      h.rule_book,
+      h.hackathon_image,
+      h.starting_date,
+      h.ending_date,
+      h.added_date,
+      GROUP_CONCAT(DISTINCT CONCAT(c.criteria_id, ':', c.criteria_info)) AS criterias,
+      GROUP_CONCAT(DISTINCT j.judge_username) AS judges
+    FROM hackathon h
+    LEFT JOIN criterias c ON h.hackathon_id = c.hackathon_id
+    LEFT JOIN judges j ON h.hackathon_id = j.hackathon_id
+    GROUP BY h.hackathon_id
+    ORDER BY h.added_date DESC
+  `);
+
+  return hackathons.map(h => ({
+    ...h,
+    criterias: h.criterias
+      ? h.criterias.split(",").map(c => {
+          const [id, info] = c.split(":");
+          return { criteria_id: Number(id), criteria_info: info };
+        })
+      : [],
+    judges: h.judges ? h.judges.split(",") : []
+  }));
+}
     static async get_hackathon_by_id(hackathon_id)
     {
         const[hackathon]= await pool.execute(`select * from hackathon where hackathon_id=?`,[hackathon_id]);

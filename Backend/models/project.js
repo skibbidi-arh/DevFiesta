@@ -1,4 +1,5 @@
 const { pool } = require("../config/database");
+const team = require("../models/participants");
 
 class Project {
   static async createProject(projectData, username) {
@@ -27,7 +28,7 @@ class Project {
 
     return { project_id };
   }
-  static async createProject_for_team(projectData, usernames) {
+  static async createProject_for_team(projectData, team_id) {
     const {
       project_name,
       git_repo,
@@ -46,19 +47,24 @@ class Project {
 
     const project_id = projectResult.insertId;
 
-    for (const Participants of usernames) {
-                const participants_username = (Participants.username || "").trim();
-                if (!participants_username) continue;
+    const team_info = await team.team_members(team_id);
+    if (!team_info.length) throw new Error("No team participants found");
+    const hackathon_id = team_info[0].hackathon_id;
+    await pool.execute(`insert into p_t_junction(team_id,project_id,hackathon_id) values(?,?,?)`,[team_id,project_id,hackathon_id]);
+    for (const participant of team_info) {
+    const participants_username = (participant.username || "").trim();
+    if (!participants_username) continue;
 
-                const user = await User.findByUsername(participants_username);
-                if (user) {
-                  await pool.execute(`INSERT INTO p_u_junction (project_id, username) VALUES (?, ?)`,[project_id, participants_username]);
-                } 
-                else {
-                  console.warn(`User not found: ${judge_username} — skipping judge_entry`);
-                }
+    const user = await User.findByUsername(participants_username);
+    if (user) {
+        await pool.execute(
+            `INSERT INTO p_u_junction (project_id, username) VALUES (?, ?)`,
+            [project_id, participants_username]
+        );
+    } else {
+        console.warn(`User not found: ${participants_username} — skipping entry`);
     }
-
+  }
     return { project_id };
   }
 
@@ -155,6 +161,11 @@ class Project {
           `select * from projects order by creation_date DESC;`
         )
         return projects;
+  }
+
+  static async teams_project(team_id, hackathon_id)
+  {
+
   }
 }
 

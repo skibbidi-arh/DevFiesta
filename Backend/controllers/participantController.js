@@ -1,4 +1,4 @@
-const Team = require("../models/team");
+const Team = require("../models/participants");
 const ResponseHandler = require("../utils/responseHandler");
 
 class participantController {
@@ -68,6 +68,46 @@ class participantController {
         } catch (error) {
             console.error("Retrieving leaderboard error:", error);
             return ResponseHandler.error(res, "Failed to retrieve leaderboard", 500, error.message);
+        }
+    }
+
+    static async team_by_username(req,res)
+    {
+        try
+        {
+            const {username} = req.user;
+            const {hackathon_id} = req.params;
+            const team = await Team.team_finding_by_username(username, hackathon_id);
+
+            if (!team || team.length === 0)
+                return ResponseHandler.notFound(res, "No team found for this user in this hackathon");
+
+                return ResponseHandler.success(res, { team }, "Team retrieved successfully");
+        }
+        catch (error) {
+            console.error("Retrieving team by username error:", error);
+            return ResponseHandler.error(res, "Failed to retrieve team", 500, error.message);
+        }
+    }
+    
+    static async getProjectDataByTeamId(req, res) {
+        try {
+            const { team_id } = req.params;
+
+            const project = await Project.get_project_data_by_team_id(team_id);
+
+            if (!project || project.length === 0) {
+                return ResponseHandler.notFound(res, "No project found for this team");
+            }
+
+            return ResponseHandler.success(
+                res,
+                { project },
+                "Project data retrieved successfully"
+            );
+        } catch (error) {
+            console.error("Error retrieving project by team ID:", error);
+            return ResponseHandler.error(res, "Failed to retrieve project", 500, error.message);
         }
     }
 }

@@ -9,11 +9,12 @@ class hackathonController{
     {
         try
         {
-            console.log('it is done')
+            console.log('it is done and dusted')
             const
             {
                 hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username, criterias
             }= req.body;
+            console.log(req.body)
 
             const hackathon_data= {hackathon_name,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username,criterias};
 
@@ -129,6 +130,7 @@ class hackathonController{
             const{hackathon_id}=req.params;
 
             const judges= await Hackathon.get_judge_details(hackathon_id);
+            console.log(judges)
 
             if(!judges || judges.length===0)
             {
@@ -202,6 +204,8 @@ class hackathonController{
     try {
         const { username } = req.user;
         const { hackathon_id } = req.params;
+        console.log(hackathon_id)
+        console.log(username)
 
         const [role] = await Hackathon.role_finding(username, hackathon_id);
 

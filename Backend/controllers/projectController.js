@@ -95,10 +95,10 @@ class ProjectController{
   }
     static async createProjectForTeam(req, res) {
     try {
-      const { project_name, git_repo, overview, motivation, features, project_genre, usernames } = req.body;
+      const { project_name, git_repo, overview, motivation, features, project_genre, team_id } = req.body;
 
       const projectData = { project_name, git_repo, overview, motivation, features, project_genre };
-      const projectId = await Project.createProject_for_team(projectData, usernames);
+      const projectId = await Project.createProject_for_team(projectData, team_id);
 
       return ResponseHandler.success(res, { projectId, projectData }, "Team project created successfully");
     } catch (error) {
@@ -172,6 +172,28 @@ class ProjectController{
       return ResponseHandler.error(res, "Failed to retrieve projects", 500, error.message);
     }
   }
+
+  static async getTeamProject(req, res) {
+  try {
+    const { team_id } = req.params;
+
+    const project = await Project.teams_project(team_id);
+
+    if (!project || project.length === 0) {
+      return ResponseHandler.notFound(res, "No project found for this team");
+    }
+
+    return ResponseHandler.success(
+      res,
+      { project },
+      "Team project retrieved successfully"
+    );
+  } catch (error) {
+    console.error("Team Project retrieval error:", error);
+    return ResponseHandler.error(res, "Failed to retrieve team project", 500, error.message);
+  }
+}
+
 }
 
 module.exports= ProjectController;

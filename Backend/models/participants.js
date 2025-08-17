@@ -19,8 +19,8 @@ class team{
         }= data;
 
         console.log(data);
-        const team_id= this.team_creation(team_name,team_info);
-        const participants_username= team_participants.split(",").map(p => p.trim());
+        const team_id= await this.team_creation(team_name,team_info);
+        const participants_username= team_participants.map(p => p.trim());
         for(const users of participants_username)
         {
             const [exists] = await pool.execute(`select count(*) as count from team_participants where username= ? and hackathon_id= ?`,[users, hackathon_id]);
@@ -43,7 +43,7 @@ class team{
 
     static async team_members(team_id)
     {
-        const team_members= await pool.execute(`select * from team_participants where team_id= ?`,[team_id]);
+        const [team_members]= await pool.execute(`select * from team_participants where team_id= ?`,[team_id]);
         return team_members;
     }
 
@@ -54,8 +54,7 @@ class team{
             const mark = marks[i].mark;
 
             await pool.execute(`INSERT INTO marking(hackathon_id, judge_username, team_id, criteria_id, marks, comments) VALUES (?, ?, ?, ?, ?, ?)`,[hackathon_id, judge_username, team_id, criteria_id, mark, comments]);
-}
-
+        }
     }
     
     static async leader_board(hackathon_id)
@@ -64,4 +63,16 @@ class team{
         return leader_board;
     }
 
+    static async team_finding_by_username(username, hackathon_id)
+    {
+        const [team]= await pool.execute(`Select * from team t join team_participants tp on t.team_id= tp.team_id where tp.username= ? and tp.hackathon_id= ?`,[username,hackathon_id]);
+        return team;
+    }
+
+    static async get_project_data_by_team_id(team_id)
+    {
+        const [ project ]= await pool.execute(`select * from projects p join p_t_junction on p.project_id= pt.project_id where pt.team_id=?`,[team_id]);
+        return project;
+    }
 }
+module.exports = team;
