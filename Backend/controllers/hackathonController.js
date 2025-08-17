@@ -64,8 +64,9 @@ class hackathonController{
     {
         try
         {
-            const {hackathon_name}= req.params;
-            const hackathons= await Hackathon.get_hackathon_by_name(hackathon_name);
+            const { name } = req.params;
+            const hackathons = await Hackathon.get_hackathon_by_name(name);
+
             if(!hackathons || hackathons.length===0)
             {
                 return ResponseHandler.notFound(res,`No hackathon named ${hackathon_name} found`);
@@ -219,7 +220,29 @@ class hackathonController{
         return ResponseHandler.error(res, "Failed retrieving role", 500, error.message);
     }
 }
-    
+static async getGivenMarks(req, res) {
+    try {
+        const { username } = req.user;
+        const { team_id } = req.params;
+
+        const marks = await Team.finding_given_marks(username, team_id);
+
+        if (!marks || marks.length === 0) {
+            return ResponseHandler.notFound(res, "No marks found for this judge on this team");
+        }
+
+        return ResponseHandler.success(
+            res,
+            { marks },
+            "Marks retrieved successfully"
+        );
+    } catch (error) {
+        console.error("Error retrieving given marks:", error);
+        return ResponseHandler.error(res, "Failed to retrieve marks", 500, error.message);
+    }
+}
+
+
 }
 
 module.exports= hackathonController;
