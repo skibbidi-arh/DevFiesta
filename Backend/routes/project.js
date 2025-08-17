@@ -20,4 +20,11 @@ router.get("/genre/:genre", ProjectController.getprojectsbyGenre)
 
 
 router.get(`/all-projects`,ProjectController.get_all_projects);
+router.post("/team-project", verifyToken, ProjectController.createProjectForTeam);
+router.get("/:id", ProjectController.getProjectById);
+router.delete("/:id", verifyToken, ProjectController.deleteProject);
+router.get("/:id/users", ProjectController.getUsersByProject);
+router.get("/filter/by-date", ProjectController.getProjectsByDate);
+router.get("/team/:team_id", ProjectController.getTeamProject);
+
 module.exports = router
