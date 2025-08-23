@@ -6,11 +6,12 @@ import ProjectDashboard from '../Pages/ProjectDashboard.jsx';
 import SupervisorDashboard from "../Pages/SupervisorDashboard";
 import StudentPersonal from "../Pages/StudentPersonal";
 import Spladmin from "../Pages/SPLAdminPage";
+import Evaluator from "../Pages/evaluatorPage";
 
 
 
 
-function AppRoutes() {
+function AppRoutes() {``
     return (
         <Routes>
             <Route path="/" element={<Loginpage />} />
@@ -19,6 +20,8 @@ function AppRoutes() {
             <Route path="/project-dashboard" element={<ProjectDashboard />} />
             <Route path="/student-personal" element={<StudentPersonal />} />
             <Route path="/SPLAdmin" element={<Spladmin />} />
+            <Route path="/Eval" element={<Evaluator />} />
+
         </Routes>
     );
 }

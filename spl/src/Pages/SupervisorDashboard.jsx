@@ -13,19 +13,7 @@ export default function SupervisorDashboard() {
         const fetchTeams = async () => {
 
             const data = [
-                {
-                    id: 1,
-                    name: "Team Alpha",
-                    members: [
-                        { name: "John Doe", attendance: 85, contribution: 90 },
-                        { name: "Jane Smith", attendance: 92, contribution: 88 },
-                        { name: "Bob Johnson", attendance: 78, contribution: 82 },
-                    ],
-                    project: "E-commerce Platform",
-                    githubLink: "https://github.com/team-alpha/ecommerce",
-                    slidesLink: "https://drive.google.com/team-alpha-slides",
-                    lastUpdate: "2 days ago",
-                },
+
                 {
                     id: 2,
                     name: "Team Gamma",
@@ -100,19 +88,7 @@ export default function SupervisorDashboard() {
     return (
         <div className="sd-bg">
             {/* Header */}
-            <header className="sd-header">
-                <div className="sd-header-left">
-                    <div className="sd-logo">🎓</div>
-                    <div>
-                        <div className="sd-title">SPL Automation System</div>
-                        <div className="sd-subtitle">Supervisor Dashboard</div>
-                    </div>
-                </div>
-                <div className="sd-header-right">
-                    <span>Welcome, Dr. Wilson</span>
-                    <button className="sd-logout-btn">Logout</button>
-                </div>
-            </header>
+
 
             <main className="sd-main">
                 {/* Stat Cards */}
@@ -125,10 +101,7 @@ export default function SupervisorDashboard() {
                         <div className="sd-stat-label">Total Students</div>
                         <div className="sd-stat-value">{totalStudents}</div>
                     </div>
-                    <div className="sd-stat-card">
-                        <div className="sd-stat-label">This Week</div>
-                        <div className="sd-stat-value">Week 8</div>
-                    </div>
+
                 </div>
 
                 {/* Tabs */}
@@ -143,7 +116,7 @@ export default function SupervisorDashboard() {
                         className={`sd-tab-btn ${activeTab === "marking" ? "active" : ""}`}
                         onClick={() => setActiveTab("marking")}
                     >
-                        Weekly Marking
+                        Total Marking
                     </button>
                 </div>
 

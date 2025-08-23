@@ -21,7 +21,6 @@ export default function LoginPage() {
             navigate("/SPLAdmin");
         }
 
-
     };
     return (
         <div className="login-bg">

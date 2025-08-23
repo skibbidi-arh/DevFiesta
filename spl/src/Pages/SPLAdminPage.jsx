@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Users, UserCheck, ClipboardList, Plus, Download, Eye, Edit, Trash2, GraduationCap, LogOut } from "lucide-react";
-import "../Styles/SPLAdminPage.css";
+import "../Styles/evalPage.css";
 
 export default function AdminDashboard() {
+    const [activeTab, setActiveTab] = useState("teams");
     const [teams] = useState([
         {
             id: 1,
@@ -29,171 +29,214 @@ export default function AdminDashboard() {
         { name: "Documentation", weight: 15 },
     ]);
 
-    const [activeTab, setActiveTab] = useState("teams");
+    const statCards = [
+        { label: "Total Teams", value: "12", colorClass: "c-sky", emoji: "👥" },
+        { label: "Supervisors", value: "8", colorClass: "c-green", emoji: "✅" },
+        { label: "Evaluators", value: "6", colorClass: "c-purple", emoji: "📋" },
+        { label: "Students", value: "36", colorClass: "c-orange", emoji: "🎓" },
+    ];
 
     return (
-        <div className="admin-dashboard">
-            {/* Header */}
-            <header className="admin-header">
-                <div className="admin-header-content">
-                    <div className="admin-header-left">
-                        <div className="admin-logo">
-                            <GraduationCap className="admin-logo-icon" />
-                        </div>
-                        <div>
-                            <h1 className="admin-title">SPL Automation System</h1>
-                            <p className="admin-subtitle">Admin Dashboard</p>
-                        </div>
-                    </div>
-                    <div className="admin-header-right">
+        <div className="page">
 
-                        <button className="admin-logout-btn">
-                            <LogOut className="admin-logout-icon" />
-                            Logout
-                        </button>
-                    </div>
-                </div>
-            </header>
 
-            <div className="admin-content">
-                {/* Stats Cards */}
-                <div className="stats-cards">
-                    <div className="stat-card">
-                        <div className="stat-card-content">
-                            <div>
-                                <p className="stat-card-label">Total Teams</p>
-                                <p className="stat-card-value">12</p>
+
+            <main className="container content">
+                {/* Stats */}
+                <section className="grid">
+                    {statCards.map((card, i) => (
+                        <article key={i} className="card card-hover">
+                            <div className="card-body">
+                                <div className="stat-row">
+                                    <div>
+                                        <p className="muted sm">{card.label}</p>
+                                        <p className={`stat ${card.colorClass}`}>{card.value}</p>
+                                    </div>
+                                    <div className="emoji">{card.emoji}</div>
+                                </div>
                             </div>
-                            <Users className="stat-card-icon" />
-                        </div>
-                    </div>
+                        </article>
+                    ))}
+                </section>
 
-                    <div className="stat-card">
-                        <div className="stat-card-content">
-                            <div>
-                                <p className="stat-card-label">Supervisors</p>
-                                <p className="stat-card-value">8</p>
-                            </div>
-                            <UserCheck className="stat-card-icon" />
-                        </div>
-                    </div>
-
-                    <div className="stat-card">
-                        <div className="stat-card-content">
-                            <div>
-                                <p className="stat-card-label">Evaluators</p>
-                                <p className="stat-card-value">6</p>
-                            </div>
-                            <ClipboardList className="stat-card-icon" />
-                        </div>
-                    </div>
-
-                    <div className="stat-card">
-                        <div className="stat-card-content">
-                            <div>
-                                <p className="stat-card-label">Students</p>
-                                <p className="stat-card-value">36</p>
-                            </div>
-                            <GraduationCap className="stat-card-icon" />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Main Content */}
-                <div className="tabs">
-                    <div className="tabs-header">
+                {/* Tabs */}
+                <section className="tabs">
+                    <div className="tab-bar">
                         <button
-                            className={`tab-trigger ${activeTab === "teams" ? "active" : ""}`}
+                            type="button"
                             onClick={() => setActiveTab("teams")}
+                            className={`tab ${activeTab === "teams" ? "active" : ""}`}
                         >
                             Teams Management
                         </button>
                         <button
-                            className={`tab-trigger ${activeTab === "evaluations" ? "active" : ""}`}
+                            type="button"
                             onClick={() => setActiveTab("evaluations")}
+                            className={`tab ${activeTab === "evaluations" ? "active" : ""}`}
                         >
                             Evaluation Criteria
                         </button>
                         <button
-                            className={`tab-trigger ${activeTab === "reports" ? "active" : ""}`}
+                            type="button"
                             onClick={() => setActiveTab("reports")}
+                            className={`tab ${activeTab === "reports" ? "active" : ""}`}
                         >
-                            Reports & Export
+                            Reports &amp; Export
                         </button>
                     </div>
 
-                    {/* Teams Management Tab */}
+                    {/* Teams */}
                     {activeTab === "teams" && (
-                        <div className="tab-content">
-                            <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-xl font-semibold text-gray-900">Teams Management</h2>
-                                <button className="btn-create-team">
-                                    <Plus className="icon" />
-                                    Create Team
-                                </button>
-                            </div>
-
-                            <div className="team-list">
-                                {teams.map((team) => (
-                                    <div key={team.id} className="team-card">
-                                        <div className="team-card-header">
-                                            <h3 className="team-name">{team.name}</h3>
-                                            <div className="badge">{team.members.length} members</div>
-                                        </div>
-                                        <p>Project: {team.project}</p>
-                                        <p>Supervisor: {team.supervisor}</p>
-                                        <p>Evaluators: {team.evaluators.join(", ")}</p>
-                                        <div className="team-card-actions">
-                                            <button className="action-btn"><Eye className="icon" /></button>
-                                            <button className="action-btn"><Edit className="icon" /></button>
-                                            <button className="action-btn"><Trash2 className="icon" /></button>
-                                        </div>
+                        <div className="card">
+                            <div className="card-header">
+                                <div className="card-header-row">
+                                    <div>
+                                        <h2 className="h2">Teams Management</h2>
+                                        <p className="muted sm">Create and manage student teams</p>
                                     </div>
-                                ))}
+                                    <button type="button" className="btn btn-primary">
+                                        <span className="icon-left" aria-hidden>＋</span>
+                                        Create Team
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="card-body">
+                                <div className="stack">
+                                    {teams.map((team) => (
+                                        <div key={team.id} className="item card item-hover">
+                                            <div className="item-row">
+                                                <div className="item-main">
+                                                    <div className="item-title">
+                                                        <h3 className="h3">{team.name}</h3>
+                                                        <span className="badge">{team.members.length} members</span>
+                                                    </div>
+                                                    <p className="muted">Project: {team.project}</p>
+
+                                                    <div className="cols">
+                                                        <div className="col">
+                                                            <p className="label">Members:</p>
+                                                            <ul className="list">
+                                                                {team.members.map((m, idx) => (
+                                                                    <li key={idx}>{m}</li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                        <div className="col">
+                                                            <p className="label">Supervisor:</p>
+                                                            <p className="muted">{team.supervisor}</p>
+                                                        </div>
+                                                        <div className="col">
+                                                            <p className="label">Evaluators:</p>
+                                                            <ul className="list">
+                                                                {team.evaluators.map((e, idx) => (
+                                                                    <li key={idx}>{e}</li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="item-actions">
+                                                    <button className="icon-btn c-sky" title="View">👁️</button>
+                                                    <button className="icon-btn" title="Edit">✏️</button>
+                                                    <button className="icon-btn c-red" title="Delete">🗑️</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     )}
 
-                    {/* Evaluation Criteria Tab */}
+                    {/* Evaluations */}
                     {activeTab === "evaluations" && (
-                        <div className="tab-content">
-                            <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-xl font-semibold text-gray-900">Evaluation Criteria</h2>
-                                <button className="btn-create-criteria">
-                                    <Plus className="icon" />
-                                    Add Criteria
-                                </button>
+                        <div className="card">
+                            <div className="card-header">
+                                <div className="card-header-row">
+                                    <div>
+                                        <h2 className="h2">Evaluation Criteria</h2>
+                                        <p className="muted sm">Define and manage evaluation criteria with weightage</p>
+                                    </div>
+                                    <button type="button" className="btn btn-primary">
+                                        <span className="icon-left" aria-hidden>＋</span>
+                                        Add Criteria
+                                    </button>
+                                </div>
                             </div>
 
-                            <div className="criteria-list">
-                                {evaluationCriteria.map((criteria, index) => (
-                                    <div key={index} className="evaluation-item">
-                                        <h3>{criteria.name}</h3>
-                                        <p>Weight: {criteria.weight}%</p>
-                                        <div className="evaluation-actions">
-                                            <button className="action-btn"><Edit className="icon" /></button>
-                                            <button className="action-btn"><Trash2 className="icon" /></button>
+                            <div className="card-body">
+                                <div className="stack">
+                                    {evaluationCriteria.map((c, idx) => (
+                                        <div key={idx} className="row card row-hover">
+                                            <div>
+                                                <h3 className="h3">{c.name}</h3>
+                                                <p className="muted sm">Weight: {c.weight}%</p>
+                                            </div>
+                                            <div className="row-actions">
+                                                <button className="icon-btn" title="Edit">✏️</button>
+                                                <button className="icon-btn c-red" title="Delete">🗑️</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Reports */}
+                    {activeTab === "reports" && (
+                        <div className="card">
+                            <div className="card-header">
+                                <h2 className="h2">Reports &amp; Export</h2>
+                                <p className="muted sm">Generate and export project reports and marksheets</p>
+                            </div>
+
+                            <div className="card-body">
+                                <div className="two-cols">
+                                    <div className="stack">
+                                        <h3 className="h3">Available Reports</h3>
+                                        <button className="btn btn-outline left">
+                                            <span className="icon-left" aria-hidden>⬇️</span>
+                                            Export All Teams Data
+                                        </button>
+                                        <button className="btn btn-outline left">
+                                            <span className="icon-left" aria-hidden>⬇️</span>
+                                            Export Evaluation Results
+                                        </button>
+                                        <button className="btn btn-outline left">
+                                            <span className="icon-left" aria-hidden>⬇️</span>
+                                            Export Student Marksheets
+                                        </button>
+                                        <button className="btn btn-outline left">
+                                            <span className="icon-left" aria-hidden>⬇️</span>
+                                            Export Project Summary
+                                        </button>
+                                    </div>
+
+                                    <div className="stack">
+                                        <h3 className="h3">Quick Stats</h3>
+                                        <div className="panel">
+                                            <div className="pair">
+                                                <span className="muted">Completed Evaluations:</span>
+                                                <span className="bold">24/36</span>
+                                            </div>
+                                            <div className="pair">
+                                                <span className="muted">Average Score:</span>
+                                                <span className="bold">78.5%</span>
+                                            </div>
+                                            <div className="pair">
+                                                <span className="muted">Projects Submitted:</span>
+                                                <span className="bold">12/12</span>
+                                            </div>
                                         </div>
                                     </div>
-                                ))}
+                                </div>
                             </div>
                         </div>
                     )}
-
-                    {/* Reports Tab */}
-                    {activeTab === "reports" && (
-                        <div className="tab-content">
-                            <div className="space-y-4">
-                                <h2 className="text-xl font-semibold text-gray-900">Reports & Export</h2>
-                                <button className="export-btn">Export All Teams Data</button>
-                                <button className="export-btn">Export Evaluation Results</button>
-                                <button className="export-btn">Export Student Marksheets</button>
-                                <button className="export-btn">Export Project Summary</button>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
+                </section>
+            </main>
         </div>
     );
 }
