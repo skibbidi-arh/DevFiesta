@@ -17,10 +17,11 @@ export default function LoginPage() {
         else if (role === "supervisor") {
             navigate("/supervisor-dashboard");
         }
-
-        else {
-            alert("Only 'Student' role demo routes to dashboard.\nYou selected: " + (role || "nothing"));
+        else if (role === "admin") {
+            navigate("/SPLAdmin");
         }
+
+
     };
     return (
         <div className="login-bg">
@@ -49,7 +50,7 @@ export default function LoginPage() {
                         onChange={(e) => setRole(e.target.value)}
                         required
                     >
-                        <option value="">Choose your role</option>
+
                         <option value="admin">Admin (SPL In-Charge)</option>
                         <option value="supervisor">Supervisor</option>
                         <option value="evaluator">Evaluator</option>
@@ -77,7 +78,7 @@ export default function LoginPage() {
                         <input type="password" placeholder="Enter your password" required />
 
                     </div>
-                    <input type="submit" value="Login"   />
+                    <input type="submit" value="Login"/>
 
                 </form>
             </div>
