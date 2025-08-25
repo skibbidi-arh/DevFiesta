@@ -6,11 +6,13 @@ import { useNavigate } from "react-router-dom";
 import "../Styles/LoginPage.css";
 
 export default function LoginPage() {
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState("admin");
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log('This is working fine');
+
         if (role === "student") {
             navigate("/student-personal");
         }
@@ -18,7 +20,11 @@ export default function LoginPage() {
             navigate("/supervisor-dashboard");
         }
         else if (role === "admin") {
-            navigate("/SPLAdmin");
+            console.log('this is not working')
+            navigate("/SPLadmin");
+        }
+        else if (role === "evaluator") {
+            navigate("/Eval");
         }
 
     };
@@ -46,7 +52,7 @@ export default function LoginPage() {
                     <label>Select Role</label>
                     <select
                         value={role}
-                        onChange={(e) => setRole(e.target.value)}
+                        onChange={(e)=>{setRole(e.target.value);console.log(e.target.value)}}>
                         required
                     >
 

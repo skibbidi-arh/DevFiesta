@@ -19,7 +19,7 @@ function AppRoutes() {``
             <Route path ="/supervisor-dashboard" element={<SupervisorDashboard />}  />
             <Route path="/project-dashboard" element={<ProjectDashboard />} />
             <Route path="/student-personal" element={<StudentPersonal />} />
-            <Route path="/SPLAdmin" element={<Spladmin />} />
+            <Route path="/SPLadmin" element={<Spladmin />} />
             <Route path="/Eval" element={<Evaluator />} />
 
         </Routes>

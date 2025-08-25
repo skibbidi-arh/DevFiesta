@@ -23,7 +23,7 @@ export default function EvaluatorPage() {
     // Weighted rubric (weights must sum to 100)
     const rubric = [
         { key: "tech", label: "Technical Implementation", weight: 40, hint: "Correctness, architecture, testing" },
-        { key: "innovation", label: "Innovation & Creativity", weight: 25, hint: "Originality, problem framing" },
+        { key: "Contribution", label: "Innovation & Creativity", weight: 25, hint: "Originality, problem framing" },
         { key: "presentation", label: "Presentation Quality", weight: 20, hint: "Clarity, structure, visuals, demo" },
         { key: "docs", label: "Documentation", weight: 15, hint: "Readme, setup, code comments" },
     ];
