@@ -30,6 +30,26 @@ class participantController {
         }
     }
 
+     static async getUserTeamByHackathon(req, res) {
+    try {
+      const { hackathon_id } = req.params;
+
+      const username = req.user.username; // or from token: req.user.username
+
+      if (!username) {
+        return res.status(400).json({ message: "Username is required" });
+      }
+
+      const team = await Team.findByHackathonAndUser
+      (hackathon_id, username);
+      console.log("controller ",team)
+      return res.status(200).json(team);
+    } catch (err) {
+      console.error("❌ Error fetching user team:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
     static async get_team_members(req, res) {
         try {
             const { team_id } = req.params;
@@ -47,7 +67,8 @@ class participantController {
     static async marking_teams(req, res) {
         try {
             const { team_id, hackathon_id, judge_username, criteria_ids, marks, comments } = req.body;
-
+            console.log(req.body)
+            
             await Team.team_marking(team_id, hackathon_id, judge_username, criteria_ids, marks, comments);
 
             return ResponseHandler.success(res, { team_id, hackathon_id }, "Team marked successfully");

@@ -13,7 +13,7 @@ class hackathon{
             starting_date,
             ending_date,
             judge_username=[],
-            criterias=[]
+            judging_criteria=[]
         }=hackathon_data;
         console.log(hackathon.data)
         const [hackathon_result]= await pool.execute(`insert into hackathon(hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,added_date) values(?,?,?,?,?,?,?,?,NOW())`,[hackathon_name,username,duration,genre,rule_book,hackathon_image,starting_date,ending_date]);
@@ -37,11 +37,11 @@ class hackathon{
             console.warn(`User not found: ${judge_username} — skipping judge_entry`);
             }
         }
-        for (const c of criterias) {
+        for (const c of judging_criteria) {
                 const criteriaInfo = (c.criteriainfo || "").trim();
                 if (!criteriaInfo) continue;
 
-                await pool.execute(`INSERT INTO criterias (hackathon_id, criteriainfo) VALUES (?, ?)`,[hackathon_id, criteriaInfo]);
+                await pool.execute(`INSERT INTO criterias (hackathon_id, criteria_info) VALUES (?, ?)`,[hackathon_id, criteriaInfo]);
         }
 
         return hackathon_id;
@@ -81,10 +81,10 @@ static async get_all_hackathon() {
 
   return hackathons.map(h => ({
     ...h,
-    criterias: h.criterias
+    judging_criteria: h.criterias
       ? h.criterias.split(",").map(c => {
           const [id, info] = c.split(":");
-          return { criteria_id: Number(id), criteria_info: info };
+          return { criteria_id: Number(id), criteriainfo: info };
         })
       : [],
     judges: h.judges ? h.judges.split(",") : []

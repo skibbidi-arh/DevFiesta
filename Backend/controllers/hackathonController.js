@@ -12,11 +12,11 @@ class hackathonController{
             console.log('it is done and dusted')
             const
             {
-                hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username, criterias
+                hackathon_name,host_username,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username, judging_criteria
             }= req.body;
             console.log(req.body)
 
-            const hackathon_data= {hackathon_name,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username,criterias};
+            const hackathon_data= {hackathon_name,duration,genre,rule_book,hackathon_image,starting_date,ending_date,judge_username,judging_criteria};
 
             const  hackathon_id= await Hackathon.host_hackathon(hackathon_data,host_username);
             
@@ -169,7 +169,8 @@ class hackathonController{
     static async get_judges_hackathons(req,res)
     {
     try{ 
-        const{username}= req.user;
+        const{username}= req.query;
+   
         const hackathons= await Hackathon.get_hackathons_by_judges(username);
         if(!hackathons||hackathons.length===0)
             {
@@ -187,7 +188,7 @@ class hackathonController{
     static async get_judges_all_hackathons(req,res)
     {
     try{ 
-        const{username}= req.user;
+        const{username}= req.query;
         const hackathons= await Hackathon.get_all_hackathons_by_judges(username);
         if(!hackathons||hackathons.length===0)
             {

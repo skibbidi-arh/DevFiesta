@@ -26,5 +26,8 @@ router.delete("/:id", verifyToken, ProjectController.deleteProject);
 router.get("/:id/users", ProjectController.getUsersByProject);
 router.get("/filter/by-date", ProjectController.getProjectsByDate);
 router.get("/team/:team_id", ProjectController.getTeamProject);
-
+router.get(
+  "/:hackathon_id/user/:username",
+  ProjectController.getUserProjectsInHackathon
+);
 module.exports = router
