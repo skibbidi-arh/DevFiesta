@@ -33,4 +33,10 @@ router.get("/:pbl_id/students", verifyToken, PBLController.getStudentsInPBL);
 router.get("/:pbl_id/judges", verifyToken, PBLController.getJudgesInPBL);
 router.get("/:pbl_id/supervisors", verifyToken, PBLController.getSupervisorsInPBL);
 
+
+router.post("/file-submission", verifyToken, PBLController.submitPBLFile);
+router.get("/:pbl_id/team/:team_id/files", verifyToken, PBLController.getPBLFiles);
+router.put("/file-update", verifyToken, PBLController.updatePBLFile);
+
+
 module.exports = router;
