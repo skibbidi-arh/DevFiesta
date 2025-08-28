@@ -504,7 +504,7 @@ static async get_team_information_by_username(req,res)
 {
     try{
         const {username, pbl_id}= req.body;
-        const team_information = await PBL.get_team_information_by_username(username,pbl_id);
+        const team_information = await PBL.get_student_team_information(username,pbl_id);
         if(team_information.affectedRows===0)
         {
             return ResponseHandler.notFound(res,`User is not in any team`);

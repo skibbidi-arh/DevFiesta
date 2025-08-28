@@ -189,12 +189,60 @@ static async get_team_details(team_id, pbl_id) {
             throw error;
         }
     }
+static async get_student_team_information(username, pbl_id) {
+    try {
 
-    static async get_student_team_information(username, pbl_id)
-    {
-        const [team_information]= await pool.execute(`select * from teams t join teamXpbl tb on t.team_id= tb.team_id where tb.username=? and tb.pbl_id= ?`,[username,pbl_id]);
-        return team_information;
+        const [teamInfo] = await pool.execute(`
+            SELECT t.*, tb.supervisor_id 
+            FROM teams t 
+            JOIN teamXpbl tb ON t.team_id = tb.team_id 
+            WHERE tb.username = ? AND tb.pbl_id = ?`,
+            [username, pbl_id]
+        );
+
+        if (teamInfo.length === 0) {
+            return null; // Student is not in any team for this PBL
+        }
+
+        const team = teamInfo[0];
+
+        const [supervisorInfo] = await pool.execute(`
+            SELECT u.full_name, u.username 
+            FROM supervisor s 
+            JOIN users u ON s.username = u.username 
+            WHERE s.supervisor_id = ?`,
+            [team.supervisor_id]
+        );
+
+        const [members] = await pool.execute(`
+            SELECT u.username, u.full_name, sp.student_id 
+            FROM teamXpbl tx 
+            JOIN users u ON tx.username = u.username 
+            LEFT JOIN studentsXpbl sp ON (sp.pbl_id = tx.pbl_id AND sp.student_username = tx.username)
+            WHERE tx.team_id = ? AND tx.pbl_id = ?`,
+            [team.team_id, pbl_id]
+        );
+
+        const [submittedFiles] = await pool.execute(`
+            SELECT * 
+            FROM pbl_team_files 
+            WHERE team_id = ? AND pbl_id = ?`,
+            [team.team_id, pbl_id]
+        );
+
+        return {
+            team_id: team.team_id,
+            team_name: team.team_name,
+            team_info: team.team_info,
+            supervisor: supervisorInfo[0] || null,
+            members: members,
+            submitted_files: submittedFiles
+        };
+    } catch (error) {
+        console.error("Error in get_student_team_information:", error);
+        throw error;
     }
+}
 
     static async judge_marking_in_pbl(judge_username, pbl_id, student_username, pbl_criteria_ids, presentation_type, marks, comments)
     {
