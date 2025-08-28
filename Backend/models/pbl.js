@@ -190,6 +190,12 @@ static async get_team_details(team_id, pbl_id) {
         }
     }
 
+    static async get_student_team_information(username, pbl_id)
+    {
+        const [team_information]= await pool.execute(`select * from teams t join teamXpbl tb on t.team_id= tb.team_id where tb.username=? and tb.pbl_id= ?`,[username,pbl_id]);
+        return team_information;
+    }
+
     static async judge_marking_in_pbl(judge_username, pbl_id, student_username, pbl_criteria_ids, presentation_type, marks, comments)
     {
         for(let i = 0; i < pbl_criteria_ids.length; i++)
