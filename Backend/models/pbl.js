@@ -365,6 +365,112 @@ static async get_team_details(team_id, pbl_id) {
         const [update]= await pool.execute(`update pbl_team_files set presentation_file= ? where pbl_id= ? and team_id= ? and presentation_type= ?`,[file_link,pbl_id,team_id,presentation_type]);
         return update; 
     }
+    static async getTeamsByPblId(pbl_id) {
+    try {
+        const [teams] = await pool.execute(`
+            SELECT DISTINCT 
+                t.team_id, 
+                t.team_name, 
+                t.team_info,
+                s.supervisor_id,
+                u.full_name AS supervisor_name
+            FROM teams t
+            INNER JOIN teamXpbl tx ON t.team_id = tx.team_id
+            INNER JOIN supervisor s ON tx.supervisor_id = s.supervisor_id
+            INNER JOIN users u ON s.username = u.username
+            WHERE tx.pbl_id = ?`,
+            [pbl_id]
+        );
+        const [members] = await pool.execute(`
+            SELECT 
+                tx.team_id,
+                u.username,
+                u.full_name,
+                sp.student_id
+            FROM teamXpbl tx
+            INNER JOIN users u ON tx.username = u.username
+            LEFT JOIN studentsXpbl sp ON (sp.pbl_id = tx.pbl_id AND sp.student_username = tx.username)
+            WHERE tx.pbl_id = ?`,
+            [pbl_id]
+        );
+
+        const teamsWithMembers = teams.map(team => {
+            const teamMembers = members.filter(member => member.team_id === team.team_id);
+            return {
+                ...team,
+                members: teamMembers.map(m => ({
+                    username: m.username,
+                    full_name: m.full_name,
+                    student_id: m.student_id
+                }))
+            };
+        });
+
+        return teamsWithMembers;
+    } catch (error) {
+        console.error("Error in getTeamsByPblId:", error);
+        throw error;
+    }
+}
+
+static async getTeamsBySupervisor(pbl_id, supervisor_username) {
+    try {
+        const [supervisors] = await pool.execute(`
+            SELECT supervisor_id 
+            FROM supervisor 
+            WHERE pbl_id = ? AND username = ?`,
+            [pbl_id, supervisor_username]
+        );
+
+        if (supervisors.length === 0) {
+            return [];
+        }
+
+        const supervisor_id = supervisors[0].supervisor_id;
+
+        const [teams] = await pool.execute(`
+            SELECT DISTINCT 
+                t.team_id, 
+                t.team_name, 
+                t.team_info
+            FROM teams t
+            INNER JOIN teamXpbl tx ON t.team_id = tx.team_id
+            WHERE tx.pbl_id = ? AND tx.supervisor_id = ?`,
+            [pbl_id, supervisor_id]
+        );
+
+        const teamIds = teams.map(team => team.team_id);
+        const [members] = await pool.execute(`
+            SELECT 
+                tx.team_id,
+                u.username,
+                u.full_name,
+                sp.student_id
+            FROM teamXpbl tx
+            INNER JOIN users u ON tx.username = u.username
+            LEFT JOIN studentsXpbl sp ON (sp.pbl_id = tx.pbl_id AND sp.student_username = tx.username)
+            WHERE tx.pbl_id = ? AND tx.team_id IN (?)`,
+            [pbl_id, teamIds]
+        );
+
+        const teamsWithMembers = teams.map(team => {
+            const teamMembers = members.filter(member => member.team_id === team.team_id);
+            return {
+                ...team,
+                members: teamMembers.map(m => ({
+                    username: m.username,
+                    full_name: m.full_name,
+                    student_id: m.student_id
+                }))
+            };
+        });
+
+        return teamsWithMembers;
+    } catch (error) {
+        console.error("Error in getTeamsBySupervisor:", error);
+        throw error;
+    }
+}
 
 }
 module.exports = PBL;

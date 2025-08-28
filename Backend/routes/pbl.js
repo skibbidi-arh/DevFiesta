@@ -38,5 +38,6 @@ router.post("/file-submission", verifyToken, PBLController.submitPBLFile);
 router.get("/:pbl_id/team/:team_id/files", verifyToken, PBLController.getPBLFiles);
 router.put("/file-update", verifyToken, PBLController.updatePBLFile);
 router.get("/get_team_information_by_username",verifyToken,PBLController.get_team_information_by_username);
-
+router.get("/get_all_teams_in_pbl/:pbl_id",verifyToken,PBLController.get_all_teams_in_pbl);
+router.get("/get_all_teams_of_supervisor/:pbl_id",verifyToken,PBLController.get_all_teams_of_supervisor);
 module.exports = router;

@@ -539,5 +539,44 @@ static async updatePBLFile(req, res) {
         ResponseHandler.error(res, "Failed to update PBL file", 500, error.message);
     }
 }
+static async getTeambypblID(req,res)
+{
+    try{
+        const {pbl_id}= req.params;
+        const teams = await PBL.getTeambypblID(pbl_id);
+        if(!teams || teams.length===0)
+        {
+            return ResponseHandler.notFound(res,`No teams found in PBL ${pbl_id}`);
+        }
+
+        return ResponseHandler.success(res,{teams},`teams fetched successfully`);
+    }
+    catch(error)
+    {
+        console.error(`Error fetching teams:`,error);
+        ResponseHandler.error(res, `failed fetching teams`,500,error.message);
+    }
+}
+
+static async getTeamsBySupervisor(req, res) {
+    try {
+        const { pbl_id } = req.params;
+        const { username } = req.user;
+        const teams = await PBL.getTeamsBySupervisor(pbl_id, username);
+
+        if (!teams || teams.length === 0) {
+            return ResponseHandler.notFound(res, `No teams found for supervisor ${username} in PBL ${pbl_id}`);
+        }
+
+        return ResponseHandler.success(
+            res,
+            { teams },
+            "Teams retrieved successfully"
+        );
+    } catch (error) {
+        console.error("Error retrieving teams by supervisor:", error);
+        ResponseHandler.error(res, "Failed to retrieve teams", 500, error.message);
+    }
+}
 }
 module.exports = PBLController;
