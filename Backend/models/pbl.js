@@ -11,13 +11,13 @@ class PBL {
             final_presentation,
             student_pass,
             judge_pass,
-            host_pass,
+            supervisor_pass,
         } = pbl_data;
 
         const [pbl_result] = await pool.execute(
             `INSERT INTO pbl (
                 pbl_name, host_username, pbl_rule_book, proposal_Date, progress_date, final_presentation,
-                student_pass, judge_pass, host_pass
+                student_pass, judge_pass, supervisor_pass
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 pbl_name,
@@ -28,7 +28,7 @@ class PBL {
                 final_presentation,
                 student_pass,
                 judge_pass,
-                host_pass
+                supervisor_pass
             ]
         );
 
@@ -77,18 +77,42 @@ class PBL {
 
     static async insert_student(pbl_id, student_username, student_id)
     {
+            const student_id_count= await pool.execute(`select count(*) as count from studentsXpbl where student_id= ? and pbl_id= ?`,[student_id,pbl_id]);
+            if(student_id_count[0][0].count>0)
+            {
+                console.error(`Student ID already exists, Student ID: ${student_id}`);
+                return null;
+            }
+            const student_username_count= await pool.execute(`select count(*) as count from studentsXpbl where student_username= ? and pbl_id= ?`,[student_username,pbl_id]);
+            if(student_username_count[0][0].count>0)
+            {
+                console.error(`Student username already exists, Username: ${student_username}`);
+                return null;
+            }
             const [inserted]= await pool.execute(`insert into studentsXpbl(pbl_id, student_id, student_username) values (?,?,?)`,[pbl_id,student_id,student_username]);
             return inserted;
     }
 
     static async insert_judge(pbl_id, judge_username)
     {
+        const judge_username_count= await pool.execute(`select count(*) as count from judgeXpbl where judge_username= ? and pbl_id= ?`,[judge_username,pbl_id]);
+        if(judge_username_count[0][0].count>0)
+        {
+            console.error(`Judge username already exists, Username: ${judge_username}`);
+            return null;
+        }
         const[inserted] = await pool.execute(`insert into judgeXpbl(pbl_id, judge_username) values (?,?)`,[pbl_id,judge_username]);
         return inserted.insertId;
     }
 
     static async insert_supervisor(pbl_id,supervisor_username)
     {
+        const supervisor_username_count= await pool.execute(`select count(*) as count from supervisor where username= ? and pbl_id= ?`,[supervisor_username,pbl_id]);
+        if(supervisor_username_count[0][0].count>0)
+        {
+            console.error(`Supervisor username already exists, Username: ${supervisor_username}`);
+            return null;
+        }
         const[supervisor]= await pool.execute(`insert into supervisor(pbl_id, username) values (?,?)`,[pbl_id,supervisor_username]);
         return supervisor.insertId;
     }
@@ -177,9 +201,29 @@ static async get_team_details(team_id, pbl_id) {
         return true;
     }
 
-    static async get_judge_marks(judge_username, pbl_id)
+        static async judge_mark_update_in_pbl(judge_username, pbl_id, student_username, pbl_criteria_ids, presentation_type, marks, comments)
     {
-        const [marks]= await pool.execute(`select * from pbl_markings where judge_username= ? and pbl_id = ?`,[judge_username,pbl_id]);
+        for(let i = 0; i < pbl_criteria_ids.length; i++)
+        {
+            const pbl_criteria_id = pbl_criteria_ids[i];
+            const mark= marks[i];
+            await pool.execute(`update pbl_markings set marks= ?, comments=? where pbl_id=? and judge_username=? and student_username= ? and pbl_criteria_id=? `,[mark,comments, pbl_id,judge_username,student_username,pbl_criteria_id,presentation_type,]);
+        }
+        return true;
+    }
+    
+    static async update_pbl_dates(pbl_id, proposal_Date, progress_date, final_presentation) {
+    await pool.execute(
+        `UPDATE pbl SET proposal_Date=?, progress_date=?, final_presentation=? WHERE pbl_id=?`,
+        [proposal_Date, progress_date, final_presentation, pbl_id]
+    );
+    return true;
+
+}
+
+    static async get_judge_marks(judge_username, pbl_id, presentation_type)
+    {
+        const [marks]= await pool.execute(`select * from pbl_markings where judge_username= ? and pbl_id = ? and presentation_type=?`,[judge_username,pbl_id, presentation_type]);
         return marks;
     }
 
@@ -190,6 +234,7 @@ static async get_team_details(team_id, pbl_id) {
                     pm.marks,
                     pm.comments,
                     pm.judge_username,
+                    pm.presentation_type,
                     u.full_name AS judge_name,
                     pc.criteria_info
                  FROM pbl_markings pm
@@ -200,6 +245,7 @@ static async get_team_details(team_id, pbl_id) {
             );
 
             return markings.map(m => ({
+                presentation_type: m.presentation_type,
                 judge_name: m.judge_name,
                 judge_username: m.judge_username,
                 criteria_info: m.criteria_info,
@@ -211,6 +257,8 @@ static async get_team_details(team_id, pbl_id) {
             throw error;
         }
     }
+
+
 
     static async getTotalMarksForStudents(pbl_id) {
         try {
@@ -247,17 +295,70 @@ static async get_team_details(team_id, pbl_id) {
                     WHEN p.host_username = u.username THEN 'Host'
                     WHEN j.judge_username = u.username THEN 'Judge'
                     WHEN sp.student_username = u.username THEN 'Student'
+                    when super.username= u.username THEN 'Supervisor'
                     ELSE 'No Role'
                 END AS role
             FROM users u
                 LEFT JOIN pbl p ON p.pbl_id = ?
                 LEFT JOIN judgeXpbl j ON j.pbl_id = p.pbl_id AND j.judge_username = u.username
                 LEFT JOIN studentsXpbl sp ON sp.pbl_id = p.pbl_id AND sp.student_username = u.username
+                LEFT JOIN supervisor super ON super.pbl_id = p.pbl_id AND super.username = u.username
             WHERE u.username = ?`,
             [pbl_id, username]
         );
         return role;
     }
-}
 
+    static async getStudentsInPBL(pbl_id) {
+    const [users] = await pool.execute(
+      `SELECT * from studentsXpbl WHERE pbl_id = ?`,[pbl_id]);
+    return users;
+    }
+
+    static async getJudgesInPBL(pbl_id) {
+        const [users] = await pool.execute(
+          `SELECT * from judgeXpbl WHERE pbl_id = ?`,[pbl_id]);
+        return users;
+}
+    static async getSupervisorsInPBL(pbl_id) {
+        const [users] = await pool.execute(
+          `SELECT * from supervisor WHERE pbl_id = ?`,[pbl_id]);
+        return users;
+    }
+
+    static async get_student_pass(pbl_id)
+    {
+        const[pass]= await pool.execute(`select student_pass from pbl where pbl_id=?`,[pbl_id]);
+        return pass;
+    }
+    static async get_judge_pass(pbl_id)
+    {
+        const[pass]= await pool.execute(`select judge_pass from pbl where pbl_id=?`,[pbl_id]);
+        return pass;
+    }
+    static async get_supervisor_pass(pbl_id)
+    {
+        const[pass]= await pool.execute(`select supervisor_pass from pbl where pbl_id=?`,[pbl_id]);
+        return pass;
+    }
+
+    static async pbl_file_sub(pbl_id, team_id, file_link, presentation_type)
+    {
+        const [submission]= await pool.execute(`insert into pbl_team_files(pbl_id, team_id, presentation_file, presentation_type) values(?,?,?,?)`,[pbl_id,team_id,file_link,presentation_type]);
+        return submission; 
+    }
+    
+    static async get_pbl_file_sub(pbl_id, team_id)
+    {
+        const [files]= await pool.execute(`select * from pbl_team_files where pbl_id= ? and team_id= ?`,[pbl_id,team_id]);
+        return files; 
+    }
+
+    static async update_pbl_file_sub(pbl_id, team_id, file_link, presentation_type)
+    {
+        const [update]= await pool.execute(`update pbl_team_files set presentation_file= ? where pbl_id= ? and team_id= ? and presentation_type= ?`,[file_link,pbl_id,team_id,presentation_type]);
+        return update; 
+    }
+
+}
 module.exports = PBL;
