@@ -539,7 +539,7 @@ static async updatePBLFile(req, res) {
         ResponseHandler.error(res, "Failed to update PBL file", 500, error.message);
     }
 }
-static async getTeambypblID(req,res)
+static async get_all_teams_in_pbl(req,res)
 {
     try{
         const {pbl_id}= req.params;
@@ -558,7 +558,7 @@ static async getTeambypblID(req,res)
     }
 }
 
-static async getTeamsBySupervisor(req, res) {
+static async get_all_teams_of_supervisor(req, res) {
     try {
         const { pbl_id } = req.params;
         const { username } = req.user;
