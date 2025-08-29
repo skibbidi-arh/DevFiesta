@@ -109,6 +109,19 @@ class AuthController {
       return ResponseHandler.error(res, "Data could not be updated", 500, error.message);
     }
   }
-}
 
+  static async getNotifications(req, res) {
+    try {
+      const username = req.user.username;
+      const notifications = await User.getNotifications(username);
+      if (!notifications) {
+        return ResponseHandler.notFound(res, "Notifications");
+      }
+      return ResponseHandler.success(res, { notifications });
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      return ResponseHandler.error(res, "Failed to fetch notifications", 500, error.message);
+    }
+}
+}
 module.exports = AuthController;

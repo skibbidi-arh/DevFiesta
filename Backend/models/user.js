@@ -96,6 +96,14 @@ class User{
 //     const [result] = await pool.execute("DELETE FROM users WHERE username = ?", [username])
 //     return result
 //   }
+
+static async getNotifications(username) {
+    const [notifications] = await pool.execute(
+      `SELECT * FROM user_notification WHERE username = ? ORDER BY created_at DESC`,
+      [username],
+    )
+    return notifications
+  }
 }
 
 module.exports = User;
