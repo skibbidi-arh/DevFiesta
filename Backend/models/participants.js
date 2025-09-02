@@ -96,5 +96,20 @@ WHERE tp.hackathon_id=?`,[hackathon_id]);
         const [ project ]= await pool.execute(`select * from projects p join p_t_junction on p.project_id= pt.project_id where pt.team_id=?`,[team_id]);
         return project;
     }
+
+    static async get_Judges_marking_data(hackathon_id, team_id, judge_username)
+    {
+        const [marking_data]= await pool.execute(`select * from marking where hackathon_id= ? and team_id= ? and judge_username= ?`,[hackathon_id, team_id, judge_username]);
+        return marking_data;
+    }
+    static async update_Judges_marking(hackathon_id, judge_username, team_id, criteria_ids, marks)
+    {
+        for (let i = 0; i < criteria_ids.length; i++) {
+            const criteria_id = criteria_ids[i];
+            const mark = marks[i];
+            await pool.execute(`UPDATE marking SET marks= ? WHERE hackathon_id= ? AND judge_username= ? AND team_id= ? AND criteria_id= ?`,[mark, hackathon_id, judge_username, team_id, criteria_id]);
+            return true;
+        }
+    }
 }
 module.exports = team;

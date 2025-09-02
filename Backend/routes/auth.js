@@ -28,5 +28,5 @@ router.post(
 
 router.get("/profile", verifyToken, AuthController.fetchProfile);
 router.put("/profile", verifyToken, AuthController.update_profile);
-router.get("/notifications", verifyToken, AuthController.getNotifications);
+router.get("/users", verifyToken, AuthController.user_list);
 module.exports = router;

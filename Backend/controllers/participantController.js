@@ -131,6 +131,35 @@ class participantController {
             return ResponseHandler.error(res, "Failed to retrieve project", 500, error.message);
         }
     }
+    static async get_Judge_Marks(req, res) {
+        try {
+            const { team_id, hackathon_id, judge_username } = req.params;
+            const marks = await Team.get_Judges_marking_data(
+              team_id,
+              hackathon_id,
+              judge_username
+            );
+
+            if (!marks || marks.length === 0) {
+                return ResponseHandler.notFound(res, "No marks found for this judge on this team");
+            }
+            return ResponseHandler.success(res, { marks }, "Marks retrieved successfully");
+        } catch (error) {
+            console.error("Error retrieving judge marks:", error);
+            return ResponseHandler.error(res, "Failed to retrieve marks", 500, error.message);
+        }
+    }
+
+    static async update_Judges_marking(req, res) {
+        try {
+            const { team_id, hackathon_id, judge_username, criteria_ids, marks } = req.body;
+            await Team.update_Judges_marking(hackathon_id, judge_username, team_id, criteria_ids, marks);
+            return ResponseHandler.success(res, { team_id, hackathon_id }, "Marks updated successfully");
+        } catch (error) {
+            console.error("Error updating judge marks:", error);
+            return ResponseHandler.error(res, "Failed to update marks", 500, error.message);
+        }
+    }
 }
 
 module.exports = participantController;

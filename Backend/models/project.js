@@ -1,6 +1,6 @@
 const { pool } = require("../config/database");
 const team = require("../models/participants");
-const User = require('../models/user')
+const User = require("../models/user");
 class Project {
   static async createProject(projectData, username) {
     const {
@@ -11,7 +11,7 @@ class Project {
       features,
       project_genre,
     } = projectData;
-    console.log(username)
+    console.log(username);
 
     const [projectResult] = await pool.execute(
       `INSERT INTO projects (
@@ -51,23 +51,28 @@ class Project {
     const team_info = await team.team_members(team_id);
     if (!team_info.length) throw new Error("No team participants found");
     const hackathon_id = team_info[0].hackathon_id;
-    console.log('this is the ',team_info)
-    await pool.execute(`insert into p_t_junction(team_id,project_id,hackathon_id) values(?,?,?)`,[team_id,project_id,hackathon_id]);
+    console.log("this is the ", team_info);
+    await pool.execute(
+      `insert into p_t_junction(team_id,project_id,hackathon_id) values(?,?,?)`,
+      [team_id, project_id, hackathon_id]
+    );
     for (const participant of team_info) {
-    const participants_username = (participant.username || "").trim();
-    if (!participants_username) continue;
+      const participants_username = (participant.username || "").trim();
+      if (!participants_username) continue;
 
-    const user = await User.findByUsername(participants_username);
-    console.log('this is the done',user)
-    if (user) {
+      const user = await User.findByUsername(participants_username);
+      console.log("this is the done", user);
+      if (user) {
         await pool.execute(
-            `INSERT INTO p_u_junction (project_id, username) VALUES (?, ?)`,
-            [project_id, participants_username]
+          `INSERT INTO p_u_junction (project_id, username) VALUES (?, ?)`,
+          [project_id, participants_username]
         );
-    } else {
-        console.warn(`User not found: ${participants_username} — skipping entry`);
+      } else {
+        console.warn(
+          `User not found: ${participants_username} — skipping entry`
+        );
+      }
     }
-  }
     return { project_id };
   }
 
@@ -128,10 +133,9 @@ class Project {
   }
 
   static async deleteProject(project_id) {
-    await pool.execute(
-      `DELETE FROM p_u_junction WHERE project_id = ?`,
-      [project_id]
-    );
+    await pool.execute(`DELETE FROM p_u_junction WHERE project_id = ?`, [
+      project_id,
+    ]);
 
     const [result] = await pool.execute(
       `DELETE FROM projects WHERE project_id = ?`,
@@ -150,7 +154,7 @@ class Project {
     );
     return users;
   }
-    static async getProjectsByGenre(project_genre) {
+  static async getProjectsByGenre(project_genre) {
     const [projects] = await pool.execute(
       `SELECT * FROM projects WHERE project_genre = ?`,
       [project_genre]
@@ -158,25 +162,24 @@ class Project {
     return projects;
   }
 
-  static async getProjectbyDate()
-  {
-        const[projects]= await pool.execute(
-          `select * from projects order by creation_date DESC;`
-        )
-        return projects;
+  static async getProjectbyDate() {
+    const [projects] = await pool.execute(
+      `select * from projects order by creation_date DESC;`
+    );
+    return projects;
   }
 
-static async teams_project(team_id) {
-  const [project] = await pool.execute(
-    `SELECT p.*
+  static async teams_project(team_id) {
+    const [project] = await pool.execute(
+      `SELECT p.*
      FROM projects p
      JOIN p_t_junction ptj ON p.project_id = ptj.project_id
      WHERE ptj.team_id = ?`,
-    [team_id]
-  );
-  return project;
-}
-static async getProjectsByHackathonAndUser(hackathonId, username) {
+      [team_id]
+    );
+    return project;
+  }
+  static async getProjectsByHackathonAndUser(hackathonId, username) {
     try {
       const query = `
         SELECT DISTINCT 
@@ -211,7 +214,5 @@ static async getProjectsByHackathonAndUser(hackathonId, username) {
 
   // ... your existing methods like createProject, getProjectById, etc.
 }
-
-
 
 module.exports = Project;
